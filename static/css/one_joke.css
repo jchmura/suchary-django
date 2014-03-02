@@ -1,0 +1,49 @@
+body {
+	background-color: #ededef;
+}
+
+.title {
+	font-size: 1.5em;
+	text-align: center;
+	font-family: 'Droid Sans', sans-serif;
+	max-width: 800px;
+	margin: 0 auto;
+}
+
+.title a {
+	text-decoration: none;
+	color: inherit;
+}
+
+.joke {
+	max-width: 700px;
+	margin: 0 auto;
+	border-style: solid;
+	border-color: #2288bb;
+	border-radius: 10px;
+	/*margin: 10px 0 10px 0;*/
+	padding: 10px;
+	font-family: sans-serif;
+}
+
+#votes {
+	color: #36c336;
+	font-weight: bold;
+}
+
+.joke_header {
+	border-bottom-width: 2px;
+	border-bottom-style: solid;
+	border-bottom-color: #5f5f5f;
+	padding: 0 0 5px 0;
+	color: #5f5f5f;
+}
+
+#original_link a{
+	float: right;
+	text-decoration: none;
+}
+
+#original_link a:hover {
+	text-decoration: underline;
+}

@@ -1,0 +1,120 @@
+.new {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.create_new {
+    text-align: center;
+    /*max-width: 700px;*/
+    margin: 0 auto 10px;
+}
+
+.create_new button {
+	-moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
+	-webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
+	box-shadow:inset 0px 1px 0px 0px #ffffff;
+	background-color:#f9f9f9;
+	-webkit-border-top-left-radius:0px;
+	-moz-border-radius-topleft:0px;
+	border-top-left-radius:0px;
+	-webkit-border-top-right-radius:0px;
+	-moz-border-radius-topright:0px;
+	border-top-right-radius:0px;
+	-webkit-border-bottom-right-radius:0px;
+	-moz-border-radius-bottomright:0px;
+	border-bottom-right-radius:0px;
+	-webkit-border-bottom-left-radius:0px;
+	-moz-border-radius-bottomleft:0px;
+	border-bottom-left-radius:0px;
+	text-indent:0;
+	border:1px solid #dcdcdc;
+	display:inline-block;
+	color:#666666;
+	font-family:Arial;
+	font-size:15px;
+	font-weight:bold;
+	font-style:normal;
+	height:65px;
+	line-height:65px;
+	width:131px;
+	text-decoration:none;
+	text-align:center;
+    text-shadow:1px 1px 0px #ffffff;
+    outline: 0;
+}
+
+.create_new button:hover {
+	background-color:#e9e9e9;
+}
+
+.create_new button:active {
+	position:relative;
+	top:1px;
+    outline: 0;
+}
+
+.create_new input[type="text"] {
+    max-width: 50%;
+}
+
+.create_new textarea {
+    width: 100%;
+}
+
+.create_new input[type="button"] {
+    -moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
+	-webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
+	box-shadow:inset 0px 1px 0px 0px #ffffff;
+	background-color:#f9f9f9;
+	-webkit-border-top-left-radius:0px;
+	-moz-border-radius-topleft:0px;
+	border-top-left-radius:0px;
+	-webkit-border-top-right-radius:0px;
+	-moz-border-radius-topright:0px;
+	border-top-right-radius:0px;
+	-webkit-border-bottom-right-radius:0px;
+	-moz-border-radius-bottomright:0px;
+	border-bottom-right-radius:0px;
+	-webkit-border-bottom-left-radius:0px;
+	-moz-border-radius-bottomleft:0px;
+	border-bottom-left-radius:0px;
+	text-indent:0;
+	border:1px solid #dcdcdc;
+	display:inline-block;
+	color:#666666;
+	font-family:Arial;
+	font-size:12px;
+	font-weight:bold;
+	font-style:normal;
+	height:30px;
+	line-height:30px;
+	width:80px;
+	text-decoration:none;
+	text-align:center;
+    text-shadow:1px 1px 0px #ffffff;
+    outline: 0;
+    float: right;
+}
+
+.create_new input[type="button"]:hover {
+	background-color:#e9e9e9;
+}
+
+.create_new input[type="button"]:active {
+	position:relative;
+	top:1px;
+    outline: 0;
+}
+
+.form {
+    display: none;
+}
+
+.new_joke {
+    border: solid #2288bb;
+    border-radius: 10px;
+	margin: 10px 0 10px 0;
+	padding: 10px;
+	font-family: sans-serif;
+    display: none;
+}

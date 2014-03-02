@@ -1,0 +1,51 @@
+{% extends "jokes_base.html" %}
+
+{% block extraextrahead %}
+        {% load staticfiles %}
+        <script type="text/javascript" src="{% static "js/autorski.js" %}"></script>
+        <script type="text/javascript" src="{% static "dajax/jquery.dajax.core.js" %}"></script>
+        {% load dajaxice_templatetags %}
+        {% dajaxice_js_import %}
+        <link rel="stylesheet" type="text/css" href="{% static "css/autorski.css" %}" />
+        <title>Najlepsze suchary</title>
+{% endblock %}
+
+{% block header %}
+<h1><a href="/autorskie">Autorskie suchary</a></h1>
+{% endblock %}
+
+{% block extraform %}
+    {% if jokes.number == 1 %}
+        <div class="new">
+            <div class="create_new">
+            <button type="button" class="create_new" onclick="disaply_form()">Dodaj nowy</button>
+            <div class="form">
+                <form action="" method="post" id="my_form" accept-charset="utf-8">
+                    <input type="text" placeholder="Autor" id="author"><br/>
+                    <textarea id="new_joke" placeholder="Suchar" rows="5"></textarea>
+                    <input type="button" value="Wyślij" onclick="send_new();">
+                </form>
+            </div>
+            </div>
+
+            <div class="new_joke">
+                <div class="joke_header">
+                    <span id="author"></span>
+                    <span id="date"></span>
+                    <span id="slug_link"><a href="">#</a></span>
+                </div>
+
+                <div class="joke_body">
+                    <p></p>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block joke_header %}
+{% if joke.votes != 0 %}
+    <span id="votes">{{ joke.votes }}</span>
+{% endif %}
+<span id="author">{{ joke.author }}</span> {{ joke.date }} <span id="slug_link"><a href="autorski/{{ joke.pk }}">#</a></span>
+{% endblock %}

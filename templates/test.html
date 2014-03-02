@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% block extrahead %}
+	{% load staticfiles %}
+	<script type="text/javascript" src="{% static "js/preserveGET.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/search.js" %}"></script>
+	<link rel="stylesheet" type="text/css" href="{% static "css/jokes_base.css" %}" />
+	<link rel="stylesheet" type="text/css" href="{% static "css/test.css" %}" />
+    <title>Najlepsze suchary</title>
+{% endblock %}
+
+{% block content %}
+	<header>
+		<div id="title" class="title">
+			<h1><a href="/test">Najlepsze suchary z całego internetu (test)</a></h1>
+		</div>
+	</header>
+
+	<div id="sort" class="sorting">
+		<h2>Sortuj wg. <button type="button" class="sorting" onclick="sort_by('votes')">PLUSÓW</button> <button type="button" class="sorting" onclick="sort_by('date')">DATY</button> <button type="button" class="sorting" onclick="reverse()">[ODWRÓĆ]</button></h2>
+	</div>
+
+	<div id="search" class="search">
+		<h4>
+			<form action="" method="get">
+		        <label for="input"> Wyszukaj suchar: </label>
+		        <input type="text" name="q">
+	    	</form>
+    	</h4>
+    	{% if search %}
+    	<h4>Wyniki wyszukiwania dla: <em>{{ search }}</em><span><a href="/">&#10006;</a></span></h4>
+    	{% endif %}
+	</div>
+
+    {% block extraform %}
+    {% endblock %}
+
+	<div id="jokes">
+		{% for joke in jokes %}
+		<div id="joke" class="joke">
+			<div class="joke_header">
+				{% load obcy_extras %}
+<span id="votes">{{ joke.votes }}</span> {{ joke.date }} <span id="slug_link"><a href="obcy/{{ joke.slug }}">#</a></span> <span id="original_link"><a href="{{ joke.url }}">źródło<img class="src_image" src="{{ MEDIA_URL }}images/{{ joke.site }}_small.{{ site_image_extension|lookup:joke.site }}" style="display:inline;vertical-align:bottom;margin-left:5px"></a></span>{{ site_image_extension.site }}
+			</div>
+
+			<div class="joke_body">
+				<p>{{ joke.body|linebreaksbr }}</p>
+			</div>
+		</div>
+		{% endfor %}
+	</div>
+
+    <div class="pages">
+    {% if jokes.paginator.num_pages > 1 %}
+    	{% if jokes.number != 1 and jokes.previous_page_number != 1 %}
+    		<button type="button" class="page page-first" onclick="page(1)">1</button>
+    	{% endif %}
+    	{% if jokes.number > 4 %}
+    		<div class="page-dots">&hellip;</div>
+    	{% endif %}
+    	{% if jokes.number > 3 %}
+    		<button type="button" class="page page-previous2" onclick="page({{ jokes.previous_page_number|add:'-1' }})">{{ jokes.previous_page_number|add:"-1" }}</button>
+    	{% endif %}
+
+    	{% if jokes.has_previous %}
+    		<button type="button" class="page page-previous" onclick="page({{ jokes.previous_page_number }})">{{ jokes.previous_page_number }}</button>
+    	{% endif %}
+
+    		<button type="button" class="page page-current">{{ jokes.number }}</button>
+
+    	{% if jokes.has_next %}
+    		<button type="button" class="page page-next" onclick="page({{ jokes.next_page_number }})">{{ jokes.next_page_number }}</button>
+    	{% endif %}
+    	{% if jokes.number < jokes.paginator.num_pages|add:"-2" %}
+    		<button type="button" class="page page-previous2" onclick="page({{ jokes.next_page_number|add:'1' }})">{{ jokes.next_page_number|add:"1" }}</button>
+    	{% endif %}
+    	{% if jokes.number < jokes.paginator.num_pages|add:"-3" %}
+    		<div class="page-dots">&hellip;</div>
+    	{% endif %}
+    	{% if jokes.number != jokes.paginator.num_pages and jokes.next_page_number != jokes.paginator.num_pages %}
+    		<button type="button" class="page page-last" onclick="page({{ jokes.paginator.num_pages }})">{{ jokes.paginator.num_pages }}</button>
+    	{% endif %}
+    {% endif %}
+    </div>
+
+{% endblock %}
+
+
+{% block tail %}
+<script type="text/javascript">
+    function scale_images(){
+        var height = $(".joke_header").height();
+        $(".src_image").css({'height': height});
+    }
+    $(window).bind( 'orientationchange', function(e){
+        scale_images();
+    });
+    $( document ).ready(function() {
+        scale_images();
+    });
+</script>
+{% endblock %}
