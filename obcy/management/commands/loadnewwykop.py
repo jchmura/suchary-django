@@ -92,6 +92,39 @@ def check_if_duplicate(joke, jokes):
         return False
 
 
+def strip_tags(body):
+    lines = body.split('\n')
+    for word in lines[-1].split():
+        if word[0] != '#':
+            break
+    else:
+        del lines[-1]
+
+    for i, line in reversed(list(enumerate(lines))):
+        if line == '':
+            del lines[i]
+
+    body = '\n'.join(lines)
+    return body
+
+
+def create_model_object(joke):
+    site = 'wykop'
+    key = str(joke['id'])
+    votes = joke['votes']
+    date = joke['date']
+    date = pytz.timezone("Europe/Warsaw").localize(date)
+    url = joke['url']
+    parser = HTMLStripper()
+    parser.feed(joke['body'])
+    body = strip_tags(parser.get_text())
+
+    j = Joke(site=site, key=key, slug=key, votes=votes, date=date, url=url, body=body)
+    j.save()
+
+    return j
+
+
 class Command(BaseCommand):
     help = 'Loads new jokes from wykop database'
 
@@ -100,29 +133,13 @@ class Command(BaseCommand):
         self.new_count = 0
         self.update_count = 0
 
-    def _create_model_object(self, joke):
-        site = 'wykop'
-        key = str(joke['id'])
-        votes = joke['votes']
-        date = joke['date']
-        date = pytz.timezone("Europe/Warsaw").localize(date)
-        url = joke['url']
-        parser = HTMLStripper()
-        parser.feed(joke['body'])
-        body = parser.get_text()
-
-        j = Joke(site=site, key=key, slug=key, votes=votes, date=date, url=url, body=body)
-        j.save()
-
-        return j
-
     def handle(self, *args, **options):
         data = json.load(open(os.path.join(settings.BASE_DIR, 'data/wykop.json'), 'r'), object_hook=inputJSON)
         jokes = Joke.objects.filter(duplicate=None)
 
         for joke in data:
             if len(Joke.objects.filter(key=str(joke['id']))) == 0:
-                new_joke = self._create_model_object(joke)
+                new_joke = create_model_object(joke)
                 if not check_if_duplicate(new_joke, jokes):
                     self.new_count += 1
             else:
