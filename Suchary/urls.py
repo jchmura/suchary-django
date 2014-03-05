@@ -24,6 +24,7 @@ urlpatterns = patterns(
     url(r'^test/$', 'obcy.views.test'),
     url(r'^(wykop|codzienny|zacny)/(?P<key>.+)$',
         RedirectView.as_view(url='http://suchary.jakubchmura.pl/obcy/%(key)s', permanent=True)),
+    url(r'^favicon.ico$', RedirectView.as_view(url='/media/images/favicon.ico')),
 )
 
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
