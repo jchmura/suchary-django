@@ -1,20 +1,20 @@
 function send_new(){
-    var author = $('.create_new #author').val();
-    var body = $('.create_new #new_joke').val();
+    var author = $('#author').val();
+    var body = $('#new_joke').val();
     var error = false;
     if(isBlank(author)) {
         error = true;
-        $('.create_new #author').css('background-color', 'lightcoral');
+        $('#form-author').addClass('has-error');
     }
     else {
-        $('.create_new #author').css('background-color', '');
+        $('#form-author').removeClass('has-error');
     }
     if(isBlank(body)) {
         error = true;
-        $('.create_new #new_joke').css('background-color', 'lightcoral');
+        $('#form-body').addClass('has-error');
     }
     else {
-        $('.create_new #new_joke').css('background-color', '');
+        $('#form-body').removeClass('has-error');
     }
     if(!error) {
         Dajaxice.autorski.send_new(Dajax.process,{'author':author, 'body': body});
@@ -23,15 +23,16 @@ function send_new(){
 function disaply_form() {
     $(".create_new button").hide();
     $(".form").show();
-    $(".form").css("margin-bottom", "50px");
+    $("#submit").show();
 }
-function set_new(author, date, id, body) {
+function set_new(author, date, pk, body) {
     $(".form").hide();
-    $(".new_joke").show();
-    $(".new_joke #author").text(author);
-    $(".new_joke #date").text(date);
-    $(".new_joke a").attr("href", "autorski/" + id);
-    $(".new_joke .joke_body p").text(body);
+    $(".new-joke").show();
+    $("#name").text(author);
+    $("#date").text(date);
+    $("#date").attr("href", "/autorski/" + pk);
+    $("#body").html(body);
+    $('#votes').html('<b>0</b>')
 }
 function isBlank(str) {
     return (!str || /^\s*$/.test(str));

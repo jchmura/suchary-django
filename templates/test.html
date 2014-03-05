@@ -1,101 +1,145 @@
-{% extends "base.html" %}
-{% block extrahead %}
-	{% load staticfiles %}
-	<script type="text/javascript" src="{% static "js/preserveGET.js" %}"></script>
-	<script type="text/javascript" src="{% static "js/search.js" %}"></script>
-	<link rel="stylesheet" type="text/css" href="{% static "css/jokes_base.css" %}" />
-	<link rel="stylesheet" type="text/css" href="{% static "css/test.css" %}" />
-    <title>Najlepsze suchary</title>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="pl">
+  <head>{% load static %}{% load obcy_extras %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Bootstrap 101 Template</title>
 
-{% block content %}
-	<header>
-		<div id="title" class="title">
-			<h1><a href="/test">Najlepsze suchary z całego internetu (test)</a></h1>
-		</div>
-	</header>
+    <!-- Bootstrap -->
+    <link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet">
 
-	<div id="sort" class="sorting">
-		<h2>Sortuj wg. <button type="button" class="sorting" onclick="sort_by('votes')">PLUSÓW</button> <button type="button" class="sorting" onclick="sort_by('date')">DATY</button> <button type="button" class="sorting" onclick="reverse()">[ODWRÓĆ]</button></h2>
-	</div>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link href="{% static "css/base.css" %}" rel="stylesheet">
+  </head>
+  <body>
+    <div class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="container">
+            <div class="nav-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Suchary</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="/">Zajumane</a></li>
+                    <li><a href="/autorskie">Autorskie</a></li>
+                </ul>
+                <form class="navbar-form navbar-right">
+                    <input type="text" class="form-control" placeholder="Szukaj">
+                </form>
+            </div>
+        </div>
+    </div>
 
-	<div id="search" class="search">
-		<h4>
-			<form action="" method="get">
-		        <label for="input"> Wyszukaj suchar: </label>
-		        <input type="text" name="q">
-	    	</form>
-    	</h4>
-    	{% if search %}
-    	<h4>Wyniki wyszukiwania dla: <em>{{ search }}</em><span><a href="/">&#10006;</a></span></h4>
-    	{% endif %}
-	</div>
+    <div class="container-fluid">
+        <div class="page-header">
+            <h3 class="text-center">Sortowanie</h3>
+            <div class="btn-group btn-group-justified">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default">
+                        <span class="glyphicon glyphicon-calendar"></span> Data
+                    </button>
+                </div>
 
-    {% block extraform %}
-    {% endblock %}
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default">
+                        <span class="glyphicon glyphicon-plus"></span> Plusy
+                    </button>
+                </div>
 
-	<div id="jokes">
-		{% for joke in jokes %}
-		<div id="joke" class="joke">
-			<div class="joke_header">
-				{% load obcy_extras %}
-<span id="votes">{{ joke.votes }}</span> {{ joke.date }} <span id="slug_link"><a href="obcy/{{ joke.slug }}">#</a></span> <span id="original_link"><a href="{{ joke.url }}">źródło<img class="src_image" src="{{ MEDIA_URL }}images/{{ joke.site }}_small.{{ site_image_extension|lookup:joke.site }}" style="display:inline;vertical-align:bottom;margin-left:5px"></a></span>{{ site_image_extension.site }}
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default">
+                        <span class="glyphicon glyphicon-sort"></span> Odwróć
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        {% for joke in jokes %}
+		<div id="joke" class="panel panel-default">
+			<div class="panel-heading">
+				<span class="badge"><b>{{ joke.votes }}</b></span>&nbsp;
+                <small><a href="#" class="hash-link">{{ joke.date }}</a></small>
+                <img class="pull-right img-responsive img-joke-source" src="{{ MEDIA_URL }}images/{{ joke.site }}_small.{{ site_image_extension|lookup:joke.site }}">
 			</div>
 
-			<div class="joke_body">
+			<div class="panel-body">
 				<p>{{ joke.body|linebreaksbr }}</p>
 			</div>
 		</div>
 		{% endfor %}
-	</div>
 
-    <div class="pages">
-    {% if jokes.paginator.num_pages > 1 %}
-    	{% if jokes.number != 1 and jokes.previous_page_number != 1 %}
-    		<button type="button" class="page page-first" onclick="page(1)">1</button>
-    	{% endif %}
-    	{% if jokes.number > 4 %}
-    		<div class="page-dots">&hellip;</div>
-    	{% endif %}
-    	{% if jokes.number > 3 %}
-    		<button type="button" class="page page-previous2" onclick="page({{ jokes.previous_page_number|add:'-1' }})">{{ jokes.previous_page_number|add:"-1" }}</button>
-    	{% endif %}
+        {% if jokes.paginator.num_pages > 1 %}
+            <div class="text-center">
+            <ul class="pagination pagination-lg">
+                {% if jokes.has_previous %}
+                    <li><a onclick="page({{ jokes.previous_page_number }})" href="javascript:void(0);">
+                        &laquo;</a></li>
+                {% else %}
+                    <li class="disabled"><span>&laquo;</span></li>
+                {% endif %}
+                {% if jokes.number > 3 %}
+                    <li><a onclick="page({{ jokes.previous_page_number|add:'-1' }})" href="javascript:void(0);">
+                        {{ jokes.previous_page_number|add:"-1" }}</a></li>
+                {% endif %}
+                {% if jokes.has_previous %}
+                    <li><a onclick="page({{ jokes.previous_page_number }})" href="javascript:void(0);">
+                        {{ jokes.previous_page_number }}</a></li>
+                {% endif %}
 
-    	{% if jokes.has_previous %}
-    		<button type="button" class="page page-previous" onclick="page({{ jokes.previous_page_number }})">{{ jokes.previous_page_number }}</button>
-    	{% endif %}
+                    <li class="active"><span>{{ jokes.number }}</span></li>
 
-    		<button type="button" class="page page-current">{{ jokes.number }}</button>
+                {% if jokes.has_next %}
+                    <li><a onclick="page({{ jokes.next_page_number }})" href="javascript:void(0);">
+                        {{ jokes.next_page_number }}</a></li>
+                {% endif %}
+                {% if jokes.number < jokes.paginator.num_pages|add:"-2" %}
+                    <li><a onclick="page({{ jokes.next_page_number|add:'1' }})" href="javascript:void(0);">
+                        {{ jokes.next_page_number|add:'1' }}</a></li>
+                {% endif %}
+                {% if jokes.has_next %}
+                    <li><a onclick="page({{ jokes.next_page_number }})" href="javascript:void(0);">
+                        &raquo;</a></li>
+                {% else %}
+                    <li class="disabled"><span>&raquo;</span></li>
+                {% endif %}
+            </ul>
+            </div>
+        {% endif %}
 
-    	{% if jokes.has_next %}
-    		<button type="button" class="page page-next" onclick="page({{ jokes.next_page_number }})">{{ jokes.next_page_number }}</button>
-    	{% endif %}
-    	{% if jokes.number < jokes.paginator.num_pages|add:"-2" %}
-    		<button type="button" class="page page-previous2" onclick="page({{ jokes.next_page_number|add:'1' }})">{{ jokes.next_page_number|add:"1" }}</button>
-    	{% endif %}
-    	{% if jokes.number < jokes.paginator.num_pages|add:"-3" %}
-    		<div class="page-dots">&hellip;</div>
-    	{% endif %}
-    	{% if jokes.number != jokes.paginator.num_pages and jokes.next_page_number != jokes.paginator.num_pages %}
-    		<button type="button" class="page page-last" onclick="page({{ jokes.paginator.num_pages }})">{{ jokes.paginator.num_pages }}</button>
-    	{% endif %}
-    {% endif %}
     </div>
 
-{% endblock %}
+    <div id="footer" class="row">
+        <div class="col-xs-12">
+            <p>Ta strona używa plików cookies, żeby sprawdzić czy wchodzi tu ktoś jeszcze poza mną samym. <span class="pull-right">Jakub Chmura Copyright © 2014</span></p>
+        </div>
+    </div>
 
-
-{% block tail %}
-<script type="text/javascript">
-    function scale_images(){
-        var height = $(".joke_header").height();
-        $(".src_image").css({'height': height});
-    }
-    $(window).bind( 'orientationchange', function(e){
-        scale_images();
-    });
-    $( document ).ready(function() {
-        scale_images();
-    });
-</script>
-{% endblock %}
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{% static "js/bootstrap.min.js" %}"></script>
+    <script type="text/javascript">
+        function scale_images(){
+            var height = $(".panel-heading").height();
+            $(".img-joke-source").css({'height': height}).show();
+        }
+        $(window).bind( 'orientationchange', function(e){
+            scale_images();
+        });
+        $( document ).ready(function() {
+            scale_images();
+        });
+    </script>
+  </body>
+</html>
