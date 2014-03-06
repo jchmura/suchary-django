@@ -128,8 +128,8 @@ def create_model_object(joke):
 class Command(BaseCommand):
     help = 'Loads new jokes from wykop database'
 
-    def __init__(self, *args, **kwargs):
-        super(Command, self).__init__(*args, **kwargs)
+    def __init__(self):
+        super(Command, self).__init__()
         self.new_count = 0
         self.update_count = 0
 
