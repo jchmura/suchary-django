@@ -21,6 +21,7 @@ urlpatterns = patterns(
     url(r'^obcy/(?P<jokeslug>.+)/$', 'obcy.views.one_joke'),
     url(r'^api', include(router.urls)),
     url(r'^autorskie/$', 'autorski.views.all_jokes'),
+    url(r'^autorski/(?P<jokeslug>.+)/$', 'autorski.views.one_joke'),
     url(r'^test/$', 'obcy.views.test'),
     url(r'^(wykop|codzienny|zacny)/(?P<key>.+)$',
         RedirectView.as_view(url='http://suchary.jakubchmura.pl/obcy/%(key)s', permanent=True)),
