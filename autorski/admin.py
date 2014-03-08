@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from autorski.models import Joke, User
+from autorski.models import Joke
 
 
 class JokeAdmin(admin.ModelAdmin):
@@ -10,5 +10,6 @@ class JokeAdmin(admin.ModelAdmin):
 
     def effective_votes(self, obj):
         return obj.votes
+
 
 admin.site.register(Joke, JokeAdmin)

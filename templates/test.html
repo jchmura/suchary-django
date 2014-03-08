@@ -5,33 +5,40 @@
     <title>Autorskie suchary</title>
     <meta name="description" content="Autorskie suchary dodane przez odwiedzających stronę">
     <style>
-        .navbar-collapse { max-height: none; }
+        .navbar-collapse {
+            max-height: none;
+        }
     </style>
 {% endblock %}
 
 {% block autorskie %}
- class="active"
+    class="active"
 {% endblock %}
 
 {% block accounts %}
     <li class="dropdown">
-        <a href="http://www.jquery2dotnet.com" class="dropdown-toggle" data-toggle="dropdown">Rejestracja<b class="caret"></b></a>
+        <a href="http://www.jquery2dotnet.com" class="dropdown-toggle" data-toggle="dropdown">Rejestracja<b
+                class="caret"></b></a>
         <ul class="dropdown-menu" style="padding: 15px;min-width: 250px;">
             <li>
                 <div class="row">
                     <div class="col-md-12">
-                        <form class="form" role="form" method="post" action="/register/" accept-charset="UTF-8" id="register-nav" onsubmit="return validate_signup();">{% csrf_token %}
+                        <form class="form" role="form" method="post" action="/register/" accept-charset="UTF-8"
+                              id="register-nav" onsubmit="return validate_signup();">{% csrf_token %}
                             <div class="form-group">
                                 <label class="sr-only" for="exampleInputUsername">Nazwa użytkownika</label>
-                                <input type="text" class="form-control" id="exampleInputUsername" placeholder="Nazwa użytkownika" required>
+                                <input type="text" class="form-control" id="exampleInputUsername"
+                                       placeholder="Nazwa użytkownika" required>
                             </div>
                             <div class="form-group">
                                 <label class="sr-only" for="exampleInputPassword">Hasło</label>
-                                <input type="password" class="form-control" id="exampleInputPassword" placeholder="Hasło" required>
+                                <input type="password" class="form-control" id="exampleInputPassword"
+                                       placeholder="Hasło" required>
                             </div>
                             <div class="form-group">
                                 <label class="sr-only" for="exampleInputPassword2">Powtórz hasło</label>
-                                <input type="password" class="form-control" id="exampleInputPassword2" placeholder="Powtórz hasło" required>
+                                <input type="password" class="form-control" id="exampleInputPassword2"
+                                       placeholder="Powtórz hasło" required>
                             </div>
                             <div class="form-group">
                                 <button type="submit" class="btn btn-success btn-block">Zarejestruj</button>
@@ -42,26 +49,31 @@
             </li>
             <li class="divider"></li>
             <li>
-                <input class="btn btn-primary btn-block" type="button" id="sign-in-facebook" value="Zarejestruj się przez Facebooka" onclick="//TODO">
+                <input class="btn btn-primary btn-block" type="button" id="sign-in-facebook"
+                       value="Zarejestruj się przez Facebooka" onclick="//TODO">
             </li>
         </ul>
     </li>
 
 
     <li class="dropdown">
-        <a href="http://www.jquery2dotnet.com" class="dropdown-toggle" data-toggle="dropdown">Logowanie<b class="caret"></b></a>
+        <a href="http://www.jquery2dotnet.com" class="dropdown-toggle" data-toggle="dropdown">Logowanie<b
+                class="caret"></b></a>
         <ul class="dropdown-menu" style="padding: 15px;min-width: 250px;">
             <li>
                 <div class="row">
                     <div class="col-md-12">
-                        <form class="form" role="form" method="post" action="/login/" accept-charset="UTF-8" id="login-nav">{% csrf_token %}
+                        <form class="form" role="form" method="post" action="/login/" accept-charset="UTF-8"
+                              id="login-nav">{% csrf_token %}
                             <div class="form-group">
                                 <label class="sr-only" for="exampleInputEmail2">Nazwa użytkownika</label>
-                                <input type="text" name="username" class="form-control" id="exampleInputLoginUserName" placeholder="Nazwa użytkownika" required>
+                                <input type="text" name="username" class="form-control" id="exampleInputLoginUserName"
+                                       placeholder="Nazwa użytkownika" required>
                             </div>
                             <div class="form-group">
                                 <label class="sr-only" for="exampleInputPassword2">Hasło</label>
-                                <input type="password" class="form-control" id="exampleInputLoginPassword" placeholder="Hasło" required>
+                                <input type="password" class="form-control" id="exampleInputLoginPassword"
+                                       placeholder="Hasło" required>
                             </div>
                             <div class="form-group">
                                 <button type="submit" class="btn btn-success btn-block">Zaloguj</button>
@@ -72,7 +84,8 @@
             </li>
             <li class="divider"></li>
             <li>
-                <input class="btn btn-primary btn-block" type="button" id="sign-in-facebook" value="Zaloguj się przez Facebooka" onclick="//TODO">
+                <input class="btn btn-primary btn-block" type="button" id="sign-in-facebook"
+                       value="Zaloguj się przez Facebooka" onclick="//TODO">
             </li>
         </ul>
     </li>
@@ -80,54 +93,55 @@
 
 
 {% block extraform %}
-<div id="fb-root"></div>
-{% if jokes.number == 1 %}
-    <!-- New joke form -->
-    <div class="new">
-        <div class="create_new">
-            <button type="button" class="btn btn-default btn-lg center-block" onclick="disaply_form()">Dodaj nowy</button>
-            <div class="form" id="form">
-                <form id="my_form" accept-charset="utf-8" role="form">
-                    <div class="form-group">
-                        <label for="username">Autor</label>
-                        <input type="text" class="form-control" id="author" placeholder="Autor">
-                    </div>
-                    <div class="form-group" id="form-body">
-                        <label for="body">Suchar</label>
-                        <textarea id="new_joke" class="form-control" rows="4" placeholder="Suchar"></textarea>
-                    </div>
-                    <button type="button" class="btn btn-default" onclick="send_new()" id="submit">Wyślij</button>
-                </form>
+    <div id="fb-root"></div>
+    {% if jokes.number == 1 %}
+        <!-- New joke form -->
+        <div class="new">
+            <div class="create_new">
+                <button type="button" class="btn btn-default btn-lg center-block" onclick="disaply_form()">Dodaj nowy
+                </button>
+                <div class="form" id="form">
+                    <form id="my_form" accept-charset="utf-8" role="form">
+                        <div class="form-group">
+                            <label for="username">Autor</label>
+                            <input type="text" class="form-control" id="author" placeholder="Autor">
+                        </div>
+                        <div class="form-group" id="form-body">
+                            <label for="body">Suchar</label>
+                            <textarea id="new_joke" class="form-control" rows="4" placeholder="Suchar"></textarea>
+                        </div>
+                        <button type="button" class="btn btn-default" onclick="send_new()" id="submit">Wyślij</button>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-{% endif %}
+    {% endif %}
 {% endblock %}
 
 {% block jokes %}
-<!-- Jokes -->
-<div class="new-joke panel panel-default">
-    <div class="panel-heading">
-        <span class="badge" id="votes"><b></b></span>&nbsp;<span id="name"></span>&nbsp;
-        <small><a class="hash-link" id="date"></a></small>
-    </div>
+    <!-- Jokes -->
+    <div class="new-joke panel panel-default">
+        <div class="panel-heading">
+            <span class="badge" id="votes"><b></b></span>&nbsp;<span id="name"></span>&nbsp;
+            <small><a class="hash-link" id="date"></a></small>
+        </div>
 
-    <div class="panel-body">
-        <p id="body"></p>
+        <div class="panel-body">
+            <p id="body"></p>
+        </div>
     </div>
-</div>
-{% for joke in jokes %}
-<div id="joke-{{ joke.pk }}" class="panel panel-default">
-    <div class="panel-heading">
-        <span class="badge"><b>{{ joke.votes }}</b></span>&nbsp;{{ joke.author }}&nbsp;
-        <small><a href="/autorski/{{ joke.pk }}" class="hash-link">{{ joke.date }}</a></small>
-    </div>
+    {% for joke in jokes %}
+        <div id="joke-{{ joke.pk }}" class="panel panel-default">
+            <div class="panel-heading">
+                <span class="badge"><b>{{ joke.votes }}</b></span>&nbsp;{{ joke.author }}&nbsp;
+                <small><a href="/autorski/{{ joke.pk }}" class="hash-link">{{ joke.date }}</a></small>
+            </div>
 
-    <div class="panel-body">
-        <p>{{ joke.body|linebreaksbr }}</p>
-    </div>
-</div>
-{% endfor %}
+            <div class="panel-body">
+                <p>{{ joke.body|linebreaksbr }}</p>
+            </div>
+        </div>
+    {% endfor %}
 {% endblock %}
 
 {% block javascript2 %}
@@ -137,31 +151,33 @@
     {% load dajaxice_templatetags %}
     {% dajaxice_js_import %}
     <script>
-        window.fbAsyncInit = function() {
+        window.fbAsyncInit = function () {
             FB.init({
-                appId      : '628784013845093',
-                status     : true,
-                xfbml      : true
+                appId: '628784013845093',
+                status: true,
+                xfbml: true
             });
 
-{#            FB.Event.subscribe('auth.authResponseChange', function(response) {#}
-{#                if (response.status === 'connected') {#}
-{#                    console.log('Logged in');#}
-{#                    console.log(response);#}
-{#                } else {#}
-{#                    //FB.login();#}
-{#                }#}
-{#            });#}
+            {#            FB.Event.subscribe('auth.authResponseChange', function(response) {#}
+            {#                if (response.status === 'connected') {#}
+            {#                    console.log('Logged in');#}
+            {#                    console.log(response);#}
+            {#                } else {#}
+            {#                    //FB.login();#}
+            {#                }#}
+            {#            });#}
         };
 
 
-
-      (function(d, s, id){
-         var js, fjs = d.getElementsByTagName(s)[0];
-         if (d.getElementById(id)) {return;}
-         js = d.createElement(s); js.id = id;
-         js.src = "//connect.facebook.net/pl_PL/all.js";
-         fjs.parentNode.insertBefore(js, fjs);
-       }(document, 'script', 'facebook-jssdk'));
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {
+                return;
+            }
+            js = d.createElement(s);
+            js.id = id;
+            js.src = "//connect.facebook.net/pl_PL/all.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
     </script>
 {% endblock %}

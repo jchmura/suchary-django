@@ -7,18 +7,22 @@
             <li>
                 <div class="row">
                     <div class="col-md-12">
-                        <form class="form" role="form" method="post" action="/signup/" accept-charset="UTF-8" id="register-nav" onsubmit="return validate_signup();">{% csrf_token %}
+                        <form class="form" role="form" method="post" action="/signup/" accept-charset="UTF-8"
+                              id="register-nav" onsubmit="return validate_signup();">{% csrf_token %}
                             <div class="form-group">
                                 <label class="sr-only" for="exampleInputUsername">Nazwa użytkownika</label>
-                                <input type="text" name="username" class="form-control" id="exampleInputUsername" placeholder="Nazwa użytkownika" required>
+                                <input type="text" name="username" class="form-control" id="exampleInputUsername"
+                                       placeholder="Nazwa użytkownika" required>
                             </div>
                             <div class="form-group">
                                 <label class="sr-only" for="exampleInputPassword">Hasło</label>
-                                <input type="password" name="password" class="form-control" id="exampleInputPassword" placeholder="Hasło" required>
+                                <input type="password" name="password" class="form-control" id="exampleInputPassword"
+                                       placeholder="Hasło" required>
                             </div>
                             <div class="form-group">
                                 <label class="sr-only" for="exampleInputPassword2">Powtórz hasło</label>
-                                <input type="password" class="form-control" id="exampleInputPassword2" placeholder="Powtórz hasło" required>
+                                <input type="password" class="form-control" id="exampleInputPassword2"
+                                       placeholder="Powtórz hasło" required>
                             </div>
                             <div class="form-group">
                                 <button type="submit" class="btn btn-success btn-block">Zarejestruj</button>
@@ -29,7 +33,8 @@
             </li>
             <li class="divider"></li>
             <li>
-                <input class="btn btn-primary btn-block" type="button" id="sign-in-facebook" value="Zarejestruj się przez Facebooka" onclick="FB_login();">
+                <input class="btn btn-primary btn-block" type="button" id="sign-in-facebook"
+                       value="Zarejestruj się przez Facebooka" onclick="FB_login();">
             </li>
         </ul>
     </li>
@@ -41,14 +46,17 @@
             <li>
                 <div class="row">
                     <div class="col-md-12">
-                        <form class="form" role="form" method="post" action="/signin/" accept-charset="UTF-8" id="login-nav">{% csrf_token %}
+                        <form class="form" role="form" method="post" action="/signin/" accept-charset="UTF-8"
+                              id="login-nav">{% csrf_token %}
                             <div class="form-group">
                                 <label class="sr-only" for="exampleInputEmail2">Nazwa użytkownika</label>
-                                <input type="text" name="username" class="form-control" id="exampleInputLoginUserName" placeholder="Nazwa użytkownika" required>
+                                <input type="text" name="username" class="form-control" id="exampleInputLoginUserName"
+                                       placeholder="Nazwa użytkownika" required>
                             </div>
                             <div class="form-group">
                                 <label class="sr-only" for="exampleInputPassword2">Hasło</label>
-                                <input type="password" name="password" class="form-control" id="exampleInputLoginPassword" placeholder="Hasło" required>
+                                <input type="password" name="password" class="form-control"
+                                       id="exampleInputLoginPassword" placeholder="Hasło" required>
                             </div>
                             <div class="form-group">
                                 <button type="submit" class="btn btn-success btn-block">Zaloguj</button>
@@ -59,7 +67,8 @@
             </li>
             <li class="divider"></li>
             <li>
-                <input class="btn btn-primary btn-block" type="button" id="sign-in-facebook" value="Zaloguj się przez Facebooka" onclick="FB_login();">
+                <input class="btn btn-primary btn-block" type="button" id="sign-in-facebook"
+                       value="Zaloguj się przez Facebooka" onclick="FB_login();">
             </li>
         </ul>
     </li>

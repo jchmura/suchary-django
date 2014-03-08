@@ -1,14 +1,14 @@
-$( window ).bind("resize", function(){
+$(window).bind("resize", function () {
     fitInput();
 });
 //resize on window change
 
-$(document).ready(function(){
-   fitInput(); 
+$(document).ready(function () {
+    fitInput();
 });
 //resize after loading
 
-function fitInput(){
+function fitInput() {
     var divW = $(".search").width();
     var labelW = $("label[for='input']").width();
     $("input[type='text']").width(divW - labelW - 30);

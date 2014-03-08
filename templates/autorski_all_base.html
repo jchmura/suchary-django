@@ -6,36 +6,34 @@
     <meta name="description" content="Autorskie suchary dodane przez odwiedzających stronę">
 {% endblock %}
 
-{% block autorskie %}
- class="active"
-{% endblock %}
+{% block autorskie %} class="active"{% endblock %}
 
 
 {% block jokes %}
-<div id="fb-root"></div>
-<!-- Jokes -->
-<div class="new-joke panel panel-default">
-    <div class="panel-heading">
-        <span class="badge" id="votes"><b></b></span>&nbsp;<span id="name"></span>&nbsp;
-        <small><a class="hash-link" id="date"></a></small>
-    </div>
+    <div id="fb-root"></div>
+    <!-- Jokes -->
+    <div class="new-joke panel panel-default">
+        <div class="panel-heading">
+            <span class="badge" id="votes"><b></b></span>&nbsp;<span id="name"></span>&nbsp;
+            <small><a class="hash-link" id="date"></a></small>
+        </div>
 
-    <div class="panel-body">
-        <p id="body"></p>
+        <div class="panel-body">
+            <p id="body"></p>
+        </div>
     </div>
-</div>
-{% for joke in jokes %}
-<div id="joke-{{ joke.pk }}" class="panel panel-default">
-    <div class="panel-heading">
-        <span class="badge"><b>{{ joke.votes }}</b></span>&nbsp;{{ joke.author }}&nbsp;
-        <small><a href="/autorski/{{ joke.pk }}" class="hash-link">{{ joke.date }}</a></small>
-    </div>
+    {% for joke in jokes %}
+        <div id="joke-{{ joke.pk }}" class="panel panel-default">
+            <div class="panel-heading">
+                <span class="badge"><b>{{ joke.votes }}</b></span>&nbsp;{{ joke.author }}&nbsp;
+                <small><a href="/autorski/{{ joke.pk }}" class="hash-link">{{ joke.date }}</a></small>
+            </div>
 
-    <div class="panel-body">
-        <p>{{ joke.body|linebreaksbr }}</p>
-    </div>
-</div>
-{% endfor %}
+            <div class="panel-body">
+                <p>{{ joke.body|linebreaksbr }}</p>
+            </div>
+        </div>
+    {% endfor %}
 {% endblock %}
 
 {% block javascript2 %}

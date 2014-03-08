@@ -36,26 +36,26 @@ def inputJSON(obj):
 
 
 def compare(set1, set2):
-        len1 = len(set1)
-        len2 = len(set2)
+    len1 = len(set1)
+    len2 = len(set2)
 
-        if len1 < len2:
-            count = count_number(set1, set2)
-        else:
-            count = count_number(set2, set1)
+    if len1 < len2:
+        count = count_number(set1, set2)
+    else:
+        count = count_number(set2, set1)
 
-        if count / min(len1, len2) > 0.8:
-            return True
-        else:
-            return False
+    if count / min(len1, len2) > 0.8:
+        return True
+    else:
+        return False
 
 
 def count_number(set1, set2):
-        count = 0
-        for word in set1:
-            if word in set2:
-                count += 1
-        return count
+    count = 0
+    for word in set1:
+        if word in set2:
+            count += 1
+    return count
 
 
 def check_if_duplicate(joke, jokes):

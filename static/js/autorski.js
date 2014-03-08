@@ -1,23 +1,23 @@
-function send_new(){
+function send_new() {
     var author = $('#author').val();
     var body = $('#new_joke').val();
     var error = false;
-    if(isBlank(author)) {
+    if (isBlank(author)) {
         error = true;
         $('#form-author').addClass('has-error');
     }
     else {
         $('#form-author').removeClass('has-error');
     }
-    if(isBlank(body)) {
+    if (isBlank(body)) {
         error = true;
         $('#form-body').addClass('has-error');
     }
     else {
         $('#form-body').removeClass('has-error');
     }
-    if(!error) {
-        Dajaxice.autorski.send_new(Dajax.process,{'author':author, 'body': body});
+    if (!error) {
+        Dajaxice.autorski.send_new(Dajax.process, {'author': author, 'body': body});
     }
 }
 function disaply_form() {
@@ -39,13 +39,13 @@ function isBlank(str) {
 }
 function validate_signup() {
     var username_pattern = new RegExp("^[a-zA-Z0-9-_]+$");
-    if(!username_pattern.test($("#exampleInputUsername").val())) {
+    if (!username_pattern.test($("#exampleInputUsername").val())) {
         return false
     }
 
     var password1 = $("#exampleInputPassword").val();
     var password2 = $("#exampleInputPassword2").val();
-    if(password1 != password2) {
+    if (password1 != password2) {
         return false;
     }
 

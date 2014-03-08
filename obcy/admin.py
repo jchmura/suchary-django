@@ -8,4 +8,5 @@ class JokeAdmin(admin.ModelAdmin):
     list_filter = ['date']
     search_fields = ['body', 'key']
 
+
 admin.site.register(Joke, JokeAdmin)

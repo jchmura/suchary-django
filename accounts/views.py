@@ -1,12 +1,14 @@
+from datetime import datetime, timedelta
+from hashlib import md5
+
 from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.shortcuts import redirect
 from django.utils.html import escape
+
 from accounts.models import FacebookUser
-from datetime import datetime, timedelta
-from hashlib import md5
 
 
 def signin(request):
@@ -51,7 +53,6 @@ def login_with_fb(request, fb_user):
 
     user = authenticate(username='fb' + uid, password=password)
     login(request, user)
-
 
 
 def create_fb_user(uid, accessToken, expiresIn, username):

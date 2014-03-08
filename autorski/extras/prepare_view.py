@@ -43,7 +43,7 @@ def all_jokes(request, pages=True):
     if pages:
         jokes = __add_pages(request, jokes)
     context.update({'jokes': jokes})
-    
+
     return context
 
 

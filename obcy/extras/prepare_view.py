@@ -67,7 +67,7 @@ def all_sites(request, pages=True):
     context.update({'jokes': jokes, 'site': 'all'})
 
     context.update({'site_image_extension': SITE_IMAGE_EXTENSION})
-    
+
     return context
 
 
