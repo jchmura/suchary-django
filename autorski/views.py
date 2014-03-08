@@ -14,7 +14,14 @@ def all_jokes(request):
 
 
 def all_jokes_logged(request, context):
-    context.update({'user': request.user.username})
+    user = request.user
+    if user.first_name:
+        username = user.first_name
+        if user.last_name:
+            username += ' ' + user.last_name
+    else:
+        username = user.username
+    context.update({'user': username})
     return render(request, "autorski_all_logged.html", context, context_instance=RequestContext(request))
 
 
