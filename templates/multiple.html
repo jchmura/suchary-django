@@ -2,6 +2,14 @@
 
 {% block header %}
 <div class="page-header">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-dismissable alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        {{ message|safe }}
+    </div>
+    {% endfor %}
+    {% endif %}
     <!-- Sorting -->
     <h3 class="text-center">Sortowanie</h3>
     <div class="btn-group btn-group-justified">

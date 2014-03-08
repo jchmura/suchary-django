@@ -22,10 +22,14 @@ urlpatterns = patterns(
     url(r'^api', include(router.urls)),
     url(r'^autorskie/$', 'autorski.views.all_jokes'),
     url(r'^autorski/(?P<jokeslug>.+)/$', 'autorski.views.one_joke'),
-    url(r'^test/$', 'obcy.views.test'),
+    url(r'^test/$', 'autorski.views.test'),
     url(r'^(wykop|codzienny|zacny)/(?P<key>.+)$',
         RedirectView.as_view(url='http://suchary.jakubchmura.pl/obcy/%(key)s', permanent=True)),
     url(r'^favicon.ico$', RedirectView.as_view(url='/media/images/favicon.ico')),
+    url(r'^signin/', 'accounts.views.signin'),
+    url(r'^signup/', 'accounts.views.signup'),
+    url(r'^logout/', 'accounts.views.logout_view'),
+    url(r'^fb-login/', 'accounts.views.fb_login'),
 )
 
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns

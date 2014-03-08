@@ -22,7 +22,7 @@ function send_new(){
 }
 function disaply_form() {
     $(".create_new button").hide();
-    $(".form").show();
+    $("#form").show();
     $("#submit").show();
 }
 function set_new(author, date, pk, body) {
@@ -36,4 +36,18 @@ function set_new(author, date, pk, body) {
 }
 function isBlank(str) {
     return (!str || /^\s*$/.test(str));
+}
+function validate_signup() {
+    var username_pattern = new RegExp("^[a-zA-Z0-9-_]+$");
+    if(!username_pattern.test($("#exampleInputUsername").val())) {
+        return false
+    }
+
+    var password1 = $("#exampleInputPassword").val();
+    var password2 = $("#exampleInputPassword2").val();
+    if(password1 != password2) {
+        return false;
+    }
+
+    return true;
 }

@@ -69,7 +69,8 @@ INSTALLED_APPS = (
 
     'obcy',
     'autorski',
-    'api'
+    'api',
+    'accounts'
 )
 
 MIDDLEWARE_CLASSES = (

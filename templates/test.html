@@ -1,145 +1,167 @@
-<!DOCTYPE html>
-<html lang="pl">
-  <head>{% load static %}{% load obcy_extras %}
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>Bootstrap 101 Template</title>
+{% extends "multiple.html" %}
 
-    <!-- Bootstrap -->
-    <link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet">
+{% block head %}{% load static %}
+    <link href="{% static "css/autorski.css" %}" rel="stylesheet">
+    <title>Autorskie suchary</title>
+    <meta name="description" content="Autorskie suchary dodane przez odwiedzających stronę">
+    <style>
+        .navbar-collapse { max-height: none; }
+    </style>
+{% endblock %}
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-    <link href="{% static "css/base.css" %}" rel="stylesheet">
-  </head>
-  <body>
-    <div class="navbar navbar-default navbar-static-top" role="navigation">
-        <div class="container">
-            <div class="nav-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                  <span class="sr-only">Toggle navigation</span>
-                  <span class="icon-bar"></span>
-                  <span class="icon-bar"></span>
-                  <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="/">Suchary</a>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li class="active"><a href="/">Zajumane</a></li>
-                    <li><a href="/autorskie">Autorskie</a></li>
-                </ul>
-                <form class="navbar-form navbar-right">
-                    <input type="text" class="form-control" placeholder="Szukaj">
+{% block autorskie %}
+ class="active"
+{% endblock %}
+
+{% block accounts %}
+    <li class="dropdown">
+        <a href="http://www.jquery2dotnet.com" class="dropdown-toggle" data-toggle="dropdown">Rejestracja<b class="caret"></b></a>
+        <ul class="dropdown-menu" style="padding: 15px;min-width: 250px;">
+            <li>
+                <div class="row">
+                    <div class="col-md-12">
+                        <form class="form" role="form" method="post" action="/register/" accept-charset="UTF-8" id="register-nav" onsubmit="return validate_signup();">{% csrf_token %}
+                            <div class="form-group">
+                                <label class="sr-only" for="exampleInputUsername">Nazwa użytkownika</label>
+                                <input type="text" class="form-control" id="exampleInputUsername" placeholder="Nazwa użytkownika" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="sr-only" for="exampleInputPassword">Hasło</label>
+                                <input type="password" class="form-control" id="exampleInputPassword" placeholder="Hasło" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="sr-only" for="exampleInputPassword2">Powtórz hasło</label>
+                                <input type="password" class="form-control" id="exampleInputPassword2" placeholder="Powtórz hasło" required>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-success btn-block">Zarejestruj</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </li>
+            <li class="divider"></li>
+            <li>
+                <input class="btn btn-primary btn-block" type="button" id="sign-in-facebook" value="Zarejestruj się przez Facebooka" onclick="//TODO">
+            </li>
+        </ul>
+    </li>
+
+
+    <li class="dropdown">
+        <a href="http://www.jquery2dotnet.com" class="dropdown-toggle" data-toggle="dropdown">Logowanie<b class="caret"></b></a>
+        <ul class="dropdown-menu" style="padding: 15px;min-width: 250px;">
+            <li>
+                <div class="row">
+                    <div class="col-md-12">
+                        <form class="form" role="form" method="post" action="/login/" accept-charset="UTF-8" id="login-nav">{% csrf_token %}
+                            <div class="form-group">
+                                <label class="sr-only" for="exampleInputEmail2">Nazwa użytkownika</label>
+                                <input type="text" name="username" class="form-control" id="exampleInputLoginUserName" placeholder="Nazwa użytkownika" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="sr-only" for="exampleInputPassword2">Hasło</label>
+                                <input type="password" class="form-control" id="exampleInputLoginPassword" placeholder="Hasło" required>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-success btn-block">Zaloguj</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </li>
+            <li class="divider"></li>
+            <li>
+                <input class="btn btn-primary btn-block" type="button" id="sign-in-facebook" value="Zaloguj się przez Facebooka" onclick="//TODO">
+            </li>
+        </ul>
+    </li>
+{% endblock %}
+
+
+{% block extraform %}
+<div id="fb-root"></div>
+{% if jokes.number == 1 %}
+    <!-- New joke form -->
+    <div class="new">
+        <div class="create_new">
+            <button type="button" class="btn btn-default btn-lg center-block" onclick="disaply_form()">Dodaj nowy</button>
+            <div class="form" id="form">
+                <form id="my_form" accept-charset="utf-8" role="form">
+                    <div class="form-group">
+                        <label for="username">Autor</label>
+                        <input type="text" class="form-control" id="author" placeholder="Autor">
+                    </div>
+                    <div class="form-group" id="form-body">
+                        <label for="body">Suchar</label>
+                        <textarea id="new_joke" class="form-control" rows="4" placeholder="Suchar"></textarea>
+                    </div>
+                    <button type="button" class="btn btn-default" onclick="send_new()" id="submit">Wyślij</button>
                 </form>
             </div>
         </div>
     </div>
+{% endif %}
+{% endblock %}
 
-    <div class="container-fluid">
-        <div class="page-header">
-            <h3 class="text-center">Sortowanie</h3>
-            <div class="btn-group btn-group-justified">
-                <div class="btn-group">
-                    <button type="button" class="btn btn-default">
-                        <span class="glyphicon glyphicon-calendar"></span> Data
-                    </button>
-                </div>
-
-                <div class="btn-group">
-                    <button type="button" class="btn btn-default">
-                        <span class="glyphicon glyphicon-plus"></span> Plusy
-                    </button>
-                </div>
-
-                <div class="btn-group">
-                    <button type="button" class="btn btn-default">
-                        <span class="glyphicon glyphicon-sort"></span> Odwróć
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        {% for joke in jokes %}
-		<div id="joke" class="panel panel-default">
-			<div class="panel-heading">
-				<span class="badge"><b>{{ joke.votes }}</b></span>&nbsp;
-                <small><a href="#" class="hash-link">{{ joke.date }}</a></small>
-                <img class="pull-right img-responsive img-joke-source" src="{{ MEDIA_URL }}images/{{ joke.site }}_small.{{ site_image_extension|lookup:joke.site }}">
-			</div>
-
-			<div class="panel-body">
-				<p>{{ joke.body|linebreaksbr }}</p>
-			</div>
-		</div>
-		{% endfor %}
-
-        {% if jokes.paginator.num_pages > 1 %}
-            <div class="text-center">
-            <ul class="pagination pagination-lg">
-                {% if jokes.has_previous %}
-                    <li><a onclick="page({{ jokes.previous_page_number }})" href="javascript:void(0);">
-                        &laquo;</a></li>
-                {% else %}
-                    <li class="disabled"><span>&laquo;</span></li>
-                {% endif %}
-                {% if jokes.number > 3 %}
-                    <li><a onclick="page({{ jokes.previous_page_number|add:'-1' }})" href="javascript:void(0);">
-                        {{ jokes.previous_page_number|add:"-1" }}</a></li>
-                {% endif %}
-                {% if jokes.has_previous %}
-                    <li><a onclick="page({{ jokes.previous_page_number }})" href="javascript:void(0);">
-                        {{ jokes.previous_page_number }}</a></li>
-                {% endif %}
-
-                    <li class="active"><span>{{ jokes.number }}</span></li>
-
-                {% if jokes.has_next %}
-                    <li><a onclick="page({{ jokes.next_page_number }})" href="javascript:void(0);">
-                        {{ jokes.next_page_number }}</a></li>
-                {% endif %}
-                {% if jokes.number < jokes.paginator.num_pages|add:"-2" %}
-                    <li><a onclick="page({{ jokes.next_page_number|add:'1' }})" href="javascript:void(0);">
-                        {{ jokes.next_page_number|add:'1' }}</a></li>
-                {% endif %}
-                {% if jokes.has_next %}
-                    <li><a onclick="page({{ jokes.next_page_number }})" href="javascript:void(0);">
-                        &raquo;</a></li>
-                {% else %}
-                    <li class="disabled"><span>&raquo;</span></li>
-                {% endif %}
-            </ul>
-            </div>
-        {% endif %}
-
+{% block jokes %}
+<!-- Jokes -->
+<div class="new-joke panel panel-default">
+    <div class="panel-heading">
+        <span class="badge" id="votes"><b></b></span>&nbsp;<span id="name"></span>&nbsp;
+        <small><a class="hash-link" id="date"></a></small>
     </div>
 
-    <div id="footer" class="row">
-        <div class="col-xs-12">
-            <p>Ta strona używa plików cookies, żeby sprawdzić czy wchodzi tu ktoś jeszcze poza mną samym. <span class="pull-right">Jakub Chmura Copyright © 2014</span></p>
-        </div>
+    <div class="panel-body">
+        <p id="body"></p>
+    </div>
+</div>
+{% for joke in jokes %}
+<div id="joke-{{ joke.pk }}" class="panel panel-default">
+    <div class="panel-heading">
+        <span class="badge"><b>{{ joke.votes }}</b></span>&nbsp;{{ joke.author }}&nbsp;
+        <small><a href="/autorski/{{ joke.pk }}" class="hash-link">{{ joke.date }}</a></small>
     </div>
 
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="{% static "js/bootstrap.min.js" %}"></script>
-    <script type="text/javascript">
-        function scale_images(){
-            var height = $(".panel-heading").height();
-            $(".img-joke-source").css({'height': height}).show();
-        }
-        $(window).bind( 'orientationchange', function(e){
-            scale_images();
-        });
-        $( document ).ready(function() {
-            scale_images();
-        });
+    <div class="panel-body">
+        <p>{{ joke.body|linebreaksbr }}</p>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}
+
+{% block javascript2 %}
+    {% load staticfiles %}
+    <script type="text/javascript" src="{% static "js/autorski.js" %}"></script>
+    <script type="text/javascript" src="{% static "dajax/jquery.dajax.core.js" %}"></script>
+    {% load dajaxice_templatetags %}
+    {% dajaxice_js_import %}
+    <script>
+        window.fbAsyncInit = function() {
+            FB.init({
+                appId      : '628784013845093',
+                status     : true,
+                xfbml      : true
+            });
+
+{#            FB.Event.subscribe('auth.authResponseChange', function(response) {#}
+{#                if (response.status === 'connected') {#}
+{#                    console.log('Logged in');#}
+{#                    console.log(response);#}
+{#                } else {#}
+{#                    //FB.login();#}
+{#                }#}
+{#            });#}
+        };
+
+
+
+      (function(d, s, id){
+         var js, fjs = d.getElementsByTagName(s)[0];
+         if (d.getElementById(id)) {return;}
+         js = d.createElement(s); js.id = id;
+         js.src = "//connect.facebook.net/pl_PL/all.js";
+         fjs.parentNode.insertBefore(js, fjs);
+       }(document, 'script', 'facebook-jssdk'));
     </script>
-  </body>
-</html>
+{% endblock %}

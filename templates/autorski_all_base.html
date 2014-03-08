@@ -11,31 +11,8 @@
 {% endblock %}
 
 
-{% block extraform %}
-{% if jokes.number == 1 %}
-    <!-- New joke form -->
-    <div class="new">
-        <div class="create_new">
-            <button type="button" class="btn btn-default btn-lg center-block" onclick="disaply_form()">Dodaj nowy</button>
-            <div class="form" id="form-author">
-                <form id="my_form" accept-charset="utf-8" role="form">
-                    <div class="form-group">
-                        <label for="username">Autor</label>
-                        <input type="text" class="form-control" id="author" placeholder="Autor">
-                    </div>
-                    <div class="form-group" id="form-body">
-                        <label for="body">Suchar</label>
-                        <textarea id="new_joke" class="form-control" rows="4" placeholder="Suchar"></textarea>
-                    </div>
-                    <button type="button" class="btn btn-default" onclick="send_new()" id="submit">Wyślij</button>
-                </form>
-            </div>
-        </div>
-    </div>
-{% endif %}
-{% endblock %}
-
 {% block jokes %}
+<div id="fb-root"></div>
 <!-- Jokes -->
 <div class="new-joke panel panel-default">
     <div class="panel-heading">
@@ -63,7 +40,9 @@
 
 {% block javascript2 %}
     {% load staticfiles %}
+    <script type="text/javascript" src="{% static "js/jquery.cookie.js" %}"></script>
     <script type="text/javascript" src="{% static "js/autorski.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/facebook.js" %}"></script>
     <script type="text/javascript" src="{% static "dajax/jquery.dajax.core.js" %}"></script>
     {% load dajaxice_templatetags %}
     {% dajaxice_js_import %}
