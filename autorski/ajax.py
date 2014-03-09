@@ -20,3 +20,23 @@ def send_new(request, author, body):
     dajax.script(function)
 
     return dajax.json()
+
+
+@dajaxice_register
+def vote_joke(request, pk, up):
+    user = request.user
+    joke = Joke.objects.get(pk=int(pk))
+    if up == 'true':
+        joke.upvotes.add(user)
+        joke.downvotes.remove(user)
+    else:
+        joke.downvotes.add(user)
+        joke.upvotes.remove(user)
+    joke.save()
+
+    votes = joke.votes
+    function = 'update_votes({}, {}, {});'.format(pk, votes, up)
+    dajax = Dajax()
+    dajax.script(function)
+
+    return dajax.json()

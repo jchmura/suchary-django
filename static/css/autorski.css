@@ -13,3 +13,18 @@ textarea {
 .new-joke {
     display: none;
 }
+
+.btn-voting {
+    height: 21px;
+    width: 21px;
+    padding: 0;
+}
+
+.btn-voting > span {
+    left: 1px;
+    margin-right: 1px;
+}
+
+.btn-voting > .glyphicon-minus {
+    left: auto;
+}

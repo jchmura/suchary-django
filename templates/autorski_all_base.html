@@ -27,6 +27,7 @@
             <div class="panel-heading">
                 <span class="badge"><b>{{ joke.votes }}</b></span>&nbsp;{{ joke.author }}&nbsp;
                 <small><a href="/autorski/{{ joke.pk }}" class="hash-link">{{ joke.date }}</a></small>
+                {% block voting %}{% endblock %}
             </div>
 
             <div class="panel-body">

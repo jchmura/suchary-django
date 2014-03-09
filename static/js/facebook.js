@@ -24,24 +24,12 @@ $(document).ready(function () {
     });
 });
 
-function csrfSafeMethod(method) {
-    // these HTTP methods do not require CSRF protection
-    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-}
-$.ajaxSetup({
-    crossDomain: false, // obviates need for sameOrigin test
-    beforeSend: function (xhr, settings) {
-        if (!csrfSafeMethod(settings.type)) {
-            xhr.setRequestHeader("X-CSRFToken", $.cookie('csrftoken'));
-        }
-    }
-});
-
 function send_info(uid, accessToken, expiresIn, username) {
     $.post("/fb-login/", {'uid': uid, 'accessToken': accessToken, 'expiresIn': expiresIn, 'username': username},
         function () {
             window.location.reload(true);
-        });
+        }
+    );
 }
 
 function FB_login() {
@@ -59,10 +47,13 @@ function FB_login() {
                 send_info(uid, accessToken, expiresIn, response.username);
             });
         } else if (response.status === 'not_authorized') {
-            // the user is logged in to Facebook,
-            // but has not authenticated your app
+            FB.login(function(response) {
+                return FB_login();
+            });
         } else {
-            // the user isn't logged in to Facebook.
+            FB.login(function(response) {
+                return FB_login();
+            });
         }
     });
 }
