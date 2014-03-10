@@ -15,8 +15,10 @@
             <div class="panel-heading">
                 <span class="badge"><b>{{ joke.votes }}</b></span>&nbsp;
                 <small><a href="/obcy/{{ joke.key }}" class="hash-link">{{ joke.date }}</a></small>
-                <img class="pull-right img-responsive img-joke-source"
+                <a href="{{ joke.url }}">
+                    <img class="pull-right img-responsive img-joke-source"
                      src="{{ MEDIA_URL }}images/{{ joke.site }}_small.{{ site_image_extension|lookup:joke.site }}">
+                </a>
             </div>
 
             <div class="panel-body">
