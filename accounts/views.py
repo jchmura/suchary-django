@@ -20,7 +20,7 @@ def signin(request):
     if user:
         if user.is_active:
             login(request, user)
-            return redirect('autorski.views.all_jokes')
+            return previous_page(request)
         else:
             return HttpResponse("User " + username + " is not active")
     else:
@@ -33,19 +33,24 @@ def signup(request):
     if username and User.objects.filter(username=username):
         messages.error(request, '<strong>Błąd!</strong> Nazwa użytkownika <strong>' + escape(username) +
                                 '</strong> jest już zajęta')
-        return redirect('autorski.views.all_jokes')
+        return previous_page(request)
 
     password = request.POST['password']
     User.objects.create_user(username=username, password=password)
 
     new_user = authenticate(username=username, password=password)
     login(request, new_user)
-    return redirect('autorski.views.all_jokes')
+    return previous_page(request)
 
 
 def logout_view(request):
     logout(request)
-    return redirect('autorski.views.all_jokes')
+    return previous_page(request)
+
+
+def previous_page(request):
+    page = request.GET.get('next', '/')
+    return redirect(page)
 
 
 def login_with_fb(request, fb_user):

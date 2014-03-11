@@ -1,6 +1,6 @@
 {% if user.is_authenticated %}
     <li><a class="navbar-brand">{{ user_fullname }}</a></li>
-    <li><a href="/logout/">Wyloguj</a></li>
+    <li><a href="/logout/?next={{ request.path }}">Wyloguj</a></li>
 {% else %}
     <li class="dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown">Rejestracja<b class="caret"></b></a>
@@ -8,7 +8,7 @@
             <li>
                 <div class="row">
                     <div class="col-md-12">
-                        <form class="form" role="form" method="post" action="/signup/" accept-charset="UTF-8"
+                        <form class="form" role="form" method="post" action="/signup/?next={{ request.path }}" accept-charset="UTF-8"
                               id="register-nav" onsubmit="return validate_signup();">{% csrf_token %}
                             <div class="form-group">
                                 <label class="sr-only" for="exampleInputUsername">Nazwa użytkownika</label>
@@ -47,7 +47,7 @@
             <li>
                 <div class="row">
                     <div class="col-md-12">
-                        <form class="form" role="form" method="post" action="/signin/" accept-charset="UTF-8"
+                        <form class="form" role="form" method="post" action="/signin/?next={{ request.path }}" accept-charset="UTF-8"
                               id="login-nav">{% csrf_token %}
                             <div class="form-group">
                                 <label class="sr-only" for="exampleInputEmail2">Nazwa użytkownika</label>
