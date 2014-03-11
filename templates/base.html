@@ -15,7 +15,7 @@
     <!--[if lt IE 9]>
           <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
           <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-        <![endif]-->
+    <![endif]-->
 
     <!-- Custom styles -->
     <link href="{% static "css/base.css" %}" rel="stylesheet">
@@ -43,7 +43,7 @@
                 </ul>
                 <div class="navbar-right">
                     <ul class="nav navbar-nav">
-                        {% block accounts %}{% endblock %}
+                        {% include "navbar_account.html" %}
                     </ul>
                     <form class="navbar-form navbar-right" action="" method="get">
                         <input type="text" class="form-control"

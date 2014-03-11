@@ -6,6 +6,7 @@ function send_new() {
     }
     else {
         $('#form-body').removeClass('has-error');
+        $('#new_joke').attr('disabled', 'disabled');
         Dajaxice.autorski.send_new(Dajax.process, {'author': author, 'body': body});
     }
 }
@@ -26,16 +27,7 @@ function set_new(author, date, pk, body) {
 function isBlank(str) {
     return (!str || /^\s*$/.test(str));
 }
-function validate_signup() {
-    var username_pattern = new RegExp("^[a-zA-Z0-9-_]+$");
-    if (!username_pattern.test($("#exampleInputUsername").val())) {
-        return false
-    }
 
-    var password1 = $("#exampleInputPassword").val();
-    var password2 = $("#exampleInputPassword2").val();
-    return password1 == password2;
-}
 
 function vote(pk, up) {
     Dajaxice.autorski.vote_joke(Dajax.process, {'pk': pk, 'up': up});
@@ -59,4 +51,10 @@ function update_votes(pk, votes, up) {
         upvote.removeAttr('disabled');
         upvote.removeClass('btn-success').addClass('btn-default');
     }
+}
+
+function open_login() {
+    setTimeout(function() {
+        $("#login-dropdown").click()
+    }, 200);
 }

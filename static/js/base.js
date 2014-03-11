@@ -10,3 +10,14 @@ $.ajaxSetup({
         }
     }
 });
+
+function validate_signup() {
+    var username_pattern = new RegExp("^[a-zA-Z0-9-_]+$");
+    if (!username_pattern.test($("#exampleInputUsername").val())) {
+        return false
+    }
+
+    var password1 = $("#exampleInputPassword").val();
+    var password2 = $("#exampleInputPassword2").val();
+    return password1 == password2;
+}

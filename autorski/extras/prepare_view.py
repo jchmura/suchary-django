@@ -21,6 +21,26 @@ def __add_pages(request, jokes):
     return jokes
 
 
+def __add_user(request, context):
+    user = request.user
+    if user.is_authenticated():
+        if user.first_name:
+            name = user.first_name
+            if user.last_name:
+                name += ' ' + user.last_name
+        else:
+            name = user.username
+        username = user.username
+    else:
+        name = None
+        username = None
+
+    context.update({'user_fullname': name, 'username': username})
+
+    moderator = True if user.groups.filter(name='Moderator') else False
+    context.update({'moderator': moderator})
+
+
 def all_jokes(request, pages=True):
     sort = request.GET.get('sort', 'date')
 
@@ -43,11 +63,13 @@ def all_jokes(request, pages=True):
     if pages:
         jokes = __add_pages(request, jokes)
     context.update({'jokes': jokes})
+    __add_user(request, context)
 
     return context
 
 
-def one_joke(id):
+def one_joke(request, id):
     joke = Joke.objects.get(pk=id)
     context = {'joke': joke}
+    __add_user(request, context)
     return context

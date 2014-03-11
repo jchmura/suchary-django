@@ -1,5 +1,5 @@
 .new {
-    margin-top: 50px;
+    margin-top: 10px;
 }
 
 #form {
@@ -27,4 +27,9 @@ textarea {
 
 .btn-voting > .glyphicon-minus {
     left: auto;
+}
+
+#login-to-add {
+    margin-top: 10px;
+    margin-bottom: auto;
 }

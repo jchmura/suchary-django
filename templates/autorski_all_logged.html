@@ -1,10 +1,5 @@
 {% extends "autorski_all_base.html" %}
 
-{% block accounts %}
-    <li><a class="navbar-brand">{{ user }}</a></li>
-    <li><a href="/logout/">Wyloguj</a></li>
-{% endblock %}
-
 {% block extraform %}
     {% if jokes.number == 1 %}
         <!-- New joke form -->
@@ -17,7 +12,7 @@
                         <div class="form-group">
                             <label for="username" class="control-label">Autor</label>
 
-                            <p class="form-control-static" id="author">{{ user }}</p>
+                            <p class="form-control-static" id="author">{{ user_fullname }}</p>
                         </div>
                         <div class="form-group" id="form-body">
                             <label for="body" class="control-label">Suchar</label>

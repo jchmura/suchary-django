@@ -46,8 +46,22 @@ def __add_pages(request, jokes):
 
 
 def __add_user(request, context):
-    user = request.user.groups.filter(name='Moderator')
-    moderator = True if user else False
+    user = request.user
+    if user.is_authenticated():
+        if user.first_name:
+            name = user.first_name
+            if user.last_name:
+                name += ' ' + user.last_name
+        else:
+            name = user.username
+        username = user.username
+    else:
+        name = None
+        username = None
+
+    context.update({'user_fullname': name, 'username': username})
+
+    moderator = True if user.groups.filter(name='Moderator') else False
     context.update({'moderator': moderator})
 
 
@@ -81,11 +95,12 @@ def all_sites(request, pages=True):
     return context
 
 
-def one_joke(jokeslug):
+def one_joke(request, jokeslug):
     joke = Joke.objects.get(slug=jokeslug)
     site_url = SITE_URL[joke.site]
     site_image_extension = SITE_IMAGE_EXTENSION[joke.site]
     context = {'joke': joke, 'site_url': site_url, 'site_image_extension': site_image_extension}
+    __add_user(request, context)
     return context
 
 
