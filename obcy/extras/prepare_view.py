@@ -10,19 +10,21 @@ from obcy.models import Joke
 SITE_URL = {
     'wykop': 'http://wykop.pl',
     'codzienny': 'https://facebook.com/sucharcodzienny',
-    'zacny': 'https://www.facebook.com/1zacnysucharmilordzie1'
+    'zacny': 'https://www.facebook.com/1zacnysucharmilordzie1',
+    'sucharnia': 'https://www.facebook.com/groups/495903230481274'
 }
 SITE_IMAGE_EXTENSION = {
     'wykop': 'png',
     'codzienny': 'jpg',
-    'zacny': 'jpg'
+    'zacny': 'jpg',
+    'sucharnia': 'png'
 }
 
 
 def __sort_recalculate(sort, joke):
     if sort == 'votes':
         votes = joke.votes
-        if joke.site == 'wykop':
+        if joke.site == 'wykop' or joke.site == 'sucharnia':
             votes *= 4.5
         return votes
     else:

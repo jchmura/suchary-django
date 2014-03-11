@@ -97,7 +97,7 @@ def remove_dots(body):
 
 
 class Command(BaseCommand):
-    help = 'Loads new jokes from suchar codzienny\'s database'
+    help = 'Loads new jokes from sucharnia database'
 
     def __init__(self):
         super(Command, self).__init__()
@@ -105,7 +105,7 @@ class Command(BaseCommand):
         self.update_count = 0
 
     def _create_model_object(self, joke):
-        site = 'codzienny'
+        site = 'sucharnia'
         key = joke['id']
         slug = key
         url = 'http://facebook.com/' + key.replace("_", "/posts/")
@@ -120,7 +120,7 @@ class Command(BaseCommand):
         return j
 
     def handle(self, *args, **options):
-        data = json.load(open(os.path.join(settings.BASE_DIR, 'data/codzienny.json'), 'r'), object_hook=inputJSON)
+        data = json.load(open(os.path.join(settings.BASE_DIR, 'data/sucharnia.json'), 'r'), object_hook=inputJSON)
         jokes = Joke.objects.filter(duplicate=None)
 
         for joke in data:

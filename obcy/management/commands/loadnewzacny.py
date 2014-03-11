@@ -79,11 +79,28 @@ def check_if_duplicate(joke, jokes):
         return False
 
 
+def remove_dots(body):
+    lines = body.split('\n')
+    enter = False
+    for i, s in reversed(list(enumerate(lines))):
+        if len(s) == 1:
+            if not enter:
+                lines[i] = ''
+                enter = True
+            else:
+                del lines[i]
+        elif s == '':
+            del lines[i]
+
+    body = '\n'.join(lines)
+    return body
+
+
 class Command(BaseCommand):
     help = 'Loads new jokes from suchar codzienny\'s database'
 
-    def __init__(self, *args, **kwargs):
-        super(Command, self).__init__(*args, **kwargs)
+    def __init__(self):
+        super(Command, self).__init__()
         self.new_count = 0
         self.update_count = 0
 
@@ -95,7 +112,7 @@ class Command(BaseCommand):
         votes = joke['votes']
         date = joke['date']
         date = pytz.timezone("Europe/Warsaw").localize(date)
-        body = joke['body']
+        body = remove_dots(joke['body'])
 
         j = Joke(site=site, key=key, slug=slug, url=url, votes=votes, date=date, body=body)
         j.save()
