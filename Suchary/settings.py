@@ -26,7 +26,8 @@ DEBUG = True
 TEMPLATE_DEBUG = True
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'templates/'),
-    os.path.join(BASE_DIR, 'templates/admin/')
+    os.path.join(BASE_DIR, 'templates/admin/'),
+    os.path.join(BASE_DIR, 'templates/base/')
 )
 
 TEMPLATE_LOADERS = (
