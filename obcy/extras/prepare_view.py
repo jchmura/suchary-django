@@ -45,6 +45,12 @@ def __add_pages(request, jokes):
     return jokes
 
 
+def __add_user(request, context):
+    user = request.user.groups.filter(name='Moderator')
+    moderator = True if user else False
+    context.update({'moderator': moderator})
+
+
 def all_sites(request, pages=True):
     sort = request.GET.get('sort', 'date')
 
@@ -70,6 +76,8 @@ def all_sites(request, pages=True):
 
     context.update({'site_image_extension': SITE_IMAGE_EXTENSION})
 
+    __add_user(request, context)
+
     return context
 
 
@@ -78,4 +86,12 @@ def one_joke(jokeslug):
     site_url = SITE_URL[joke.site]
     site_image_extension = SITE_IMAGE_EXTENSION[joke.site]
     context = {'joke': joke, 'site_url': site_url, 'site_image_extension': site_image_extension}
+    return context
+
+
+def random(request):
+    jokes = Joke.objects.filter(duplicate=None).order_by('?')
+    jokes = __add_pages(request, jokes)
+    context = {'jokes': jokes, 'site': 'all', 'site_image_extension': SITE_IMAGE_EXTENSION}
+    __add_user(request, context)
     return context

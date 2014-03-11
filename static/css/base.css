@@ -40,3 +40,7 @@ margin-top: 0;
         max-width: 768px;
     }
 }
+
+a.delete-joke, a.delete-joke:hover {
+    color: inherit;
+}

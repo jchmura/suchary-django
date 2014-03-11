@@ -113,6 +113,11 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="{% static "js/bootstrap.min.js" %}"></script>
+<script type="text/javascript" src="{% static "js/jquery.cookie.js" %}"></script>
+<script type="text/javascript" src="{% static "dajax/jquery.dajax.core.js" %}"></script>
+{% load dajaxice_templatetags %}
+{% dajaxice_js_import %}
+<script src="{% static "js/base.js" %}"></script>
 <script>
     (function (i, s, o, g, r, a, m) {
         i['GoogleAnalyticsObject'] = r;
