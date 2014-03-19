@@ -1,0 +1,38 @@
+{% if jokes.paginator.num_pages > 1 %}
+    <!-- Pagination -->
+    <div class="text-center">
+        <ul class="pagination pagination-lg">
+            {% if jokes.has_previous %}
+                <li><a onclick="page({{ jokes.previous_page_number }})" href="javascript:void(0);">
+                    &laquo;</a></li>
+            {% else %}
+                <li class="disabled"><span>&laquo;</span></li>
+            {% endif %}
+            {% if jokes.number > 2 %}
+                <li><a onclick="page({{ jokes.previous_page_number|add:'-1' }})" href="javascript:void(0);">
+                    {{ jokes.previous_page_number|add:"-1" }}</a></li>
+            {% endif %}
+            {% if jokes.has_previous %}
+                <li><a onclick="page({{ jokes.previous_page_number }})" href="javascript:void(0);">
+                    {{ jokes.previous_page_number }}</a></li>
+            {% endif %}
+
+            <li class="active"><span>{{ jokes.number }}</span></li>
+
+            {% if jokes.has_next %}
+                <li><a onclick="page({{ jokes.next_page_number }})" href="javascript:void(0);">
+                    {{ jokes.next_page_number }}</a></li>
+            {% endif %}
+            {% if jokes.number < jokes.paginator.num_pages|add:"-2" %}
+                <li><a onclick="page({{ jokes.next_page_number|add:'1' }})" href="javascript:void(0);">
+                    {{ jokes.next_page_number|add:'1' }}</a></li>
+            {% endif %}
+            {% if jokes.has_next %}
+                <li><a onclick="page({{ jokes.next_page_number }})" href="javascript:void(0);">
+                    &raquo;</a></li>
+            {% else %}
+                <li class="disabled"><span>&raquo;</span></li>
+            {% endif %}
+        </ul>
+    </div>
+{% endif %}

@@ -44,3 +44,7 @@ margin-top: 0;
 a.delete-joke, a.delete-joke:hover {
     color: inherit;
 }
+
+#load-new-random {
+    margin-bottom: 20px;
+}
