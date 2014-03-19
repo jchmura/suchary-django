@@ -14,6 +14,12 @@ class Command(BaseCommand):
             else:
                 del lines[-1]
 
+            for word in lines[0].split():
+                if word[0] != '#':
+                    break
+            else:
+                del lines[0]
+
             for i, line in reversed(list(enumerate(lines))):
                 if line == '':
                     del lines[i]
