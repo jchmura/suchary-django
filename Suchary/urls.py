@@ -17,20 +17,26 @@ urlpatterns = patterns(
     '',
     url(r'^admin/', include(admin.site.urls)),
     url(dajaxice_config.dajaxice_url, include('dajaxice.urls')),
+    # obcy
     url(r'^$', 'obcy.views.all_sites'),
     url(r'^obcy/random/$', 'obcy.views.all_random'),
     url(r'^obcy/(?P<jokeslug>.+)/$', 'obcy.views.one_joke'),
-    url(r'^api', include(router.urls)),
-    url(r'^autorskie/$', 'autorski.views.all_jokes'),
-    url(r'^autorski/(?P<jokeslug>.+)/$', 'autorski.views.one_joke'),
-    url(r'^test/$', 'autorski.views.test'),
     url(r'^(wykop|codzienny|zacny)/(?P<key>.+)$',
         RedirectView.as_view(url='http://suchary.jakubchmura.pl/obcy/%(key)s', permanent=True)),
-    url(r'^favicon.ico$', RedirectView.as_view(url='/media/images/favicon.ico')),
+    # autorski
+    url(r'^autorskie/$', 'autorski.views.all_jokes'),
+    url(r'^autorskie/(?P<jokeslug>.+)/$', 'autorski.views.one_joke'),
+    # accounts
     url(r'^signin/', 'accounts.views.signin'),
     url(r'^signup/', 'accounts.views.signup'),
     url(r'^logout/', 'accounts.views.logout_view'),
     url(r'^fb-login/', 'accounts.views.fb_login'),
+    # api
+    url(r'^api', include(router.urls)),
+    # other
+    url(r'^favicon.ico$', RedirectView.as_view(url='/media/images/favicon.ico')),
+    url(r'^test/$', 'autorski.views.test'),
+
 )
 
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns

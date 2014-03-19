@@ -22,7 +22,7 @@ def all_jokes_not_logged(request, context):
 
 
 def one_joke(request, jokeslug):
-    context = prepare_view.one_joke(jokeslug)
+    context = prepare_view.one_joke(request, jokeslug)
     return render(request, 'autorski_one.html', context, context_instance=RequestContext(request))
 
 
