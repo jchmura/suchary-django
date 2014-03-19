@@ -6,4 +6,4 @@ from obcy.models import Joke
 class ObcyJokeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Joke
-        fields = ('key', 'slug', 'votes', 'date', 'url', 'body')
+        fields = ('key', 'votes', 'date', 'added', 'url', 'body')

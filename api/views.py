@@ -10,4 +10,4 @@ class AllViewSet(viewsets.ReadOnlyModelViewSet):
     paginate_by_param = 'limit'
 
     def get_queryset(self):
-        return prepare_view.all_sites(self.request, False)['jokes']
+        return prepare_view.all_sites(self.request, pages=False)['jokes']
