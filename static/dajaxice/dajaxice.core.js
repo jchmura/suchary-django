@@ -11,6 +11,27 @@ var Dajaxice = {
     
     send_new: function(callback_function, argv, custom_settings){
         return Dajaxice.call('autorski.send_new', 'POST', callback_function, argv, custom_settings);
+    },
+
+    vote_joke: function(callback_function, argv, custom_settings){
+        return Dajaxice.call('autorski.vote_joke', 'POST', callback_function, argv, custom_settings);
+    }
+
+
+    
+    
+    }
+    
+,
+    
+    obcy: {
+    
+    edit_joke: function(callback_function, argv, custom_settings){
+        return Dajaxice.call('obcy.edit_joke', 'POST', callback_function, argv, custom_settings);
+    },
+
+    delete_joke: function(callback_function, argv, custom_settings){
+        return Dajaxice.call('obcy.delete_joke', 'POST', callback_function, argv, custom_settings);
     }
 
 

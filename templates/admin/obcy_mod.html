@@ -1,0 +1,8 @@
+{% if moderator %}
+<small>&nbsp;&nbsp;
+    <a href="javascript:void(0)" class="delete-joke" onclick="delete_joke('obcy', {{ joke_id }})">
+        <span class="glyphicon glyphicon-trash">&nbsp;</span></a>&nbsp;
+    <a href="javascript:void(0)" class="delete-joke" onclick="edit_joke('obcy', {{ joke_id }})">
+        <span class="glyphicon glyphicon-pencil">&nbsp;</span></a>
+</small>
+{% endif %}

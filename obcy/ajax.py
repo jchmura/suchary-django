@@ -19,3 +19,21 @@ def delete_joke(request, pk):
     dajax.script(function)
 
     return dajax.json()
+
+
+@dajaxice_register
+def edit_joke(request, pk, body):
+    dajax = Dajax()
+
+    user = request.user.groups.filter(name='Moderator')
+    if user:
+        joke = Joke.objects.get(pk=pk)
+        joke.body = body
+        joke.save()
+        function = 'edited_joke({})'.format(pk)
+    else:
+        function = 'alert("User not authorised to edit joke");'
+
+    dajax.script(function)
+
+    return dajax.json()
