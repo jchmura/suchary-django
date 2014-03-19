@@ -4,6 +4,7 @@ import os
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
+from django.utils import timezone
 import pytz
 
 from obcy.models import Joke
@@ -113,8 +114,9 @@ class Command(BaseCommand):
         date = joke['date']
         date = pytz.timezone("Europe/Warsaw").localize(date)
         body = remove_dots(joke['body'])
+        added = timezone.localtime(timezone.now())
 
-        j = Joke(site=site, key=key, slug=slug, url=url, votes=votes, date=date, body=body)
+        j = Joke(site=site, key=key, slug=slug, url=url, votes=votes, date=date, body=body, added=added)
         j.save()
 
         return j

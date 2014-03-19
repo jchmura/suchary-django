@@ -15,12 +15,18 @@
         <div id="joke-{{ joke.pk }}" class="panel panel-default">
             <div class="panel-heading">
                 <span class="badge"><b>{{ joke.votes }}</b></span>&nbsp;
-                <small><a href="/obcy/{{ joke.key }}" class="hash-link">{{ joke.date }}</a></small>
-                    {% delete_joke joke.pk %}
-                    <a href="{{ joke.url }}">
-                        <span class="pull-right"><img class="img-joke-source"
-                         src="{{ MEDIA_URL }}images/{{ joke.site }}_small.{{ site_image_extension|lookup:joke.site }}"></span>
-                    </a>
+                <small>
+                    <a href="/obcy/{{ joke.key }}" class="hash-link">{{ joke.date }}</a>
+                    {% if last_seen and last_seen|lt:joke.added %}
+                        &nbsp;<span class="label label-info">Nowy</span>
+                    {% endif %}
+                </small>
+
+                {% delete_joke joke.pk %}
+                <a href="{{ joke.url }}">
+                    <span class="pull-right"><img class="img-joke-source"
+                     src="{{ MEDIA_URL }}images/{{ joke.site }}_small.{{ site_image_extension|lookup:joke.site }}"></span>
+                </a>
 
             </div>
 

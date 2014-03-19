@@ -10,6 +10,7 @@ class Joke(models.Model):
     url = models.URLField()
     body = models.TextField()
     duplicate = models.ForeignKey('self', blank=True, null=True)
+    added = models.DateTimeField()
 
     def __str__(self):
         return str(self.key)

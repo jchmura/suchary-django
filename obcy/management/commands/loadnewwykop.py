@@ -5,6 +5,7 @@ import os
 
 from django.core.management.base import BaseCommand
 from django.conf import settings
+from django.utils import timezone
 import pytz
 
 from obcy.models import Joke
@@ -118,8 +119,9 @@ def create_model_object(joke):
     parser = HTMLStripper()
     parser.feed(joke['body'])
     body = strip_tags(parser.get_text())
+    added = timezone.localtime(timezone.now())
 
-    j = Joke(site=site, key=key, slug=key, votes=votes, date=date, url=url, body=body)
+    j = Joke(site=site, key=key, slug=key, votes=votes, date=date, url=url, body=body, added=added)
     j.save()
 
     return j
