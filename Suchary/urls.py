@@ -2,6 +2,7 @@ from django.conf.urls import patterns, include, url
 from django.views.generic.base import RedirectView
 from rest_framework import routers
 from django.contrib import admin
+from Suchary import settings
 
 from api.views import AllViewSet
 
@@ -34,7 +35,8 @@ urlpatterns = patterns(
     # api
     url(r'^api', include(router.urls)),
     # other
-    url(r'^favicon.ico$', RedirectView.as_view(url='/media/images/favicon.ico')),
+    url(r'^favicon\.ico$', RedirectView.as_view(url='/media/images/favicon.ico')),
+    url(r'^apk/$', RedirectView.as_view(url='/media/files/suchary.apk')),
     url(r'^test/$', 'autorski.views.test'),
 
 )
