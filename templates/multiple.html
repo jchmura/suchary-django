@@ -2,6 +2,7 @@
 
 {% block header %}
     <div class="page-header">
+        {% block header-top %}{% endblock %}
         {% if messages %}
             {% for message in messages %}
                 <div class="alert alert-dismissable alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}">
