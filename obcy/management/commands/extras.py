@@ -118,8 +118,11 @@ def strip_tags(body):
         del lines[0]
 
     for i, line in reversed(list(enumerate(lines))):
+        lines[i] = line.lstrip()
         if line == '':
             del lines[i]
+        else:
+            break
 
     body = '\n'.join(lines)
     return body
