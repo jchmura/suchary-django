@@ -16,7 +16,7 @@
             <div class="panel-heading">
                 <span class="badge"><b>{{ joke.votes }}</b></span>&nbsp;
                 <small>
-                    <a href="/obcy/{{ joke.key }}" class="hash-link">{{ joke.date }}</a>
+                    <a href="/obcy/{{ joke.key }}" class="hash-link">{{ joke.added }}</a>
                     {% if last_seen and last_seen|lt:joke.added %}
                         &nbsp;<span class="label label-info">Nowy</span>
                     {% endif %}

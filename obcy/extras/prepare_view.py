@@ -76,6 +76,8 @@ def __last_seen(request):
 
 def all_sites(request, pages=True):
     sort = request.GET.get('sort', 'added')
+    if sort == 'date':
+        sort = 'added'
 
     reverse = request.GET.get('reversed', True)
     if reverse != 'true':

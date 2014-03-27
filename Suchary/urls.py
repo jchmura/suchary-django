@@ -2,7 +2,6 @@ from django.conf.urls import patterns, include, url
 from django.views.generic.base import RedirectView
 from rest_framework import routers
 from django.contrib import admin
-from Suchary import settings
 
 from api.views import AllViewSet
 
