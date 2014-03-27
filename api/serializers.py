@@ -8,4 +8,4 @@ class ObcyJokeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Joke
-        fields = ('key', 'votes', 'date', 'added', 'url', 'body')
+        fields = ('key', 'votes', 'date', 'added', 'url', 'body', 'site')
