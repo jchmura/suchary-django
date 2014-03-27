@@ -49,20 +49,22 @@ def __add_pages(request, jokes):
 
 
 def __add_user(request, context):
+    page = request.GET.get('page', 1)
     user = request.user
-    if user.is_authenticated():
-        if user.first_name:
-            name = user.first_name
-            if user.last_name:
-                name += ' ' + user.last_name
+    if page != 1:
+        if user.is_authenticated():
+            if user.first_name:
+                name = user.first_name
+                if user.last_name:
+                    name += ' ' + user.last_name
+            else:
+                name = user.username
+            username = user.username
         else:
-            name = user.username
-        username = user.username
-    else:
-        name = None
-        username = None
+            name = None
+            username = None
 
-    context.update({'user_fullname': name, 'username': username})
+        context.update({'user_fullname': name, 'username': username})
 
     moderator = True if user.groups.filter(name='Moderator') else False
     context.update({'moderator': moderator})
