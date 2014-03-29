@@ -11,3 +11,6 @@ class AllViewSet(viewsets.ReadOnlyModelViewSet):
 
     def get_queryset(self):
         return prepare_view.all_sites(self.request, pages=False)['jokes']
+
+    def get_object(self, queryset=None):
+        return prepare_view.one_joke(self.request, self.kwargs['key'])['joke']

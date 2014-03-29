@@ -11,7 +11,7 @@ from dajaxice.core import dajaxice_autodiscover, dajaxice_config
 dajaxice_autodiscover()
 
 router = routers.DefaultRouter()
-router.register(r'/obcy', AllViewSet, 'obcy')
+router.register(r'obcy', AllViewSet, 'obcy')
 
 urlpatterns = patterns(
     '',
@@ -32,7 +32,7 @@ urlpatterns = patterns(
     url(r'^logout/', 'accounts.views.logout_view'),
     url(r'^fb-login/', 'accounts.views.fb_login'),
     # api
-    url(r'^api', include(router.urls)),
+    url(r'^api/', include(router.urls)),
     # other
     url(r'^favicon\.ico$', RedirectView.as_view(url='/media/images/favicon.ico')),
     url(r'^apk/$', RedirectView.as_view(url='/media/files/suchary.apk')),
