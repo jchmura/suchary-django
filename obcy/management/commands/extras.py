@@ -61,14 +61,9 @@ def check_if_duplicate(joke, jokes):
             continue
         set2 = set(second_joke.body.split())
         if compare(set1, set2):
-            if joke.votes > second_joke.votes:
-                if not second_joke.duplicate:
-                    second_joke.duplicate = joke
-                    second_joke.save()
-            else:
-                if not joke.duplicate:
-                    joke.duplicate = second_joke
-                    joke.save()
+            if not joke.duplicate:
+                joke.duplicate = second_joke
+                joke.save()
             return True
     else:
         return False
