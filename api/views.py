@@ -1,7 +1,11 @@
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 from rest_framework import viewsets
 
 from obcy.extras import prepare_view
 from api.serializers import ObcyJokeSerializer
+from api.models import Device
 
 
 class AllViewSet(viewsets.ReadOnlyModelViewSet):
@@ -14,3 +18,29 @@ class AllViewSet(viewsets.ReadOnlyModelViewSet):
 
     def get_object(self, queryset=None):
         return prepare_view.one_joke(self.request, self.kwargs['key'])['joke']
+
+
+@csrf_exempt
+@require_POST
+def register_device(request):
+    registration_id = request.POST.get('registration_id')
+    try:
+        device = Device.objects.get(registration_id=registration_id)
+        device.active = True
+        device.save()
+    except Device.DoesNotExist:
+        Device.objects.create(registration_id=registration_id)
+    return HttpResponse(status=201)
+
+
+@csrf_exempt
+@require_POST
+def deactivate_device(request):
+    registration_id = request.POST.get('registration_id')
+    try:
+        device = Device.objects.get(registration_id=registration_id)
+        device.active = False
+        device.save()
+    except Device.DoesNotExist:
+        pass
+    return HttpResponse(status=200)

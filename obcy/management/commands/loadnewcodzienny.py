@@ -2,13 +2,11 @@ import json
 import os
 
 from django.conf import settings
-
 from django.core.management.base import BaseCommand
 from django.utils import timezone
 import pytz
 
-from obcy.management.commands.extras import inputJSON, check_if_duplicate, remove_dots
-
+from obcy.management.commands.extras import inputJSON, check_if_duplicate, remove_dots, notify_devices
 from obcy.models import Joke
 
 
@@ -53,6 +51,10 @@ class Command(BaseCommand):
                     old_joke.votes = new_votes
                     old_joke.save()
                     self.update_count += 1
+
+        if self.new_count:
+            last = Joke.objects.latest('added')
+            notify_devices(self.new_count, last.body)
 
         self.stdout.write('Successfully added %d new jokes' % self.new_count)
         self.stdout.write('Successfully updated %d jokes' % self.update_count)

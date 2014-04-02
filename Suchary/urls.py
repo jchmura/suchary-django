@@ -5,9 +5,11 @@ from django.contrib import admin
 
 from api.views import AllViewSet
 
+
 admin.autodiscover()
 
 from dajaxice.core import dajaxice_autodiscover, dajaxice_config
+
 dajaxice_autodiscover()
 
 router = routers.DefaultRouter()
@@ -33,6 +35,8 @@ urlpatterns = patterns(
     url(r'^fb-login/', 'accounts.views.fb_login'),
     # api
     url(r'^api/', include(router.urls)),
+    url(r'^register/$', 'api.views.register_device'),
+    url(r'^unregister/$', 'api.views.deactivate_device'),
     # other
     url(r'^favicon\.ico$', RedirectView.as_view(url='/media/images/favicon.ico')),
     url(r'^apk/$', RedirectView.as_view(url='/media/files/suchary.apk')),
@@ -41,4 +45,5 @@ urlpatterns = patterns(
 )
 
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+
 urlpatterns += staticfiles_urlpatterns()
