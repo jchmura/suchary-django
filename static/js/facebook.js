@@ -47,11 +47,11 @@ function FB_login() {
                 send_info(uid, accessToken, expiresIn, response.username);
             });
         } else if (response.status === 'not_authorized') {
-            FB.login(function(response) {
+            FB.login(function (response) {
                 return FB_login();
             });
         } else {
-            FB.login(function(response) {
+            FB.login(function (response) {
                 return FB_login();
             });
         }

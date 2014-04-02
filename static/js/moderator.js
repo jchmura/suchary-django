@@ -18,7 +18,7 @@ var old_text;
 function edit_joke_on(app, pk) {
     var paragraph = $("#joke-" + pk + " > .panel-body > p");
     old_text = paragraph.html();
-    paragraph.replaceWith("<textarea class='edit'>" + paragraph.html().replace(/<br>/g,"\n").trim() + "</textarea>")
+    paragraph.replaceWith("<textarea class='edit'>" + paragraph.html().replace(/<br>/g, "\n").trim() + "</textarea>")
     var edit = $(".edit");
     edit.css({
         'width': '100%',

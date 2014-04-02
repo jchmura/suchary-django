@@ -2,7 +2,6 @@ from datetime import datetime, timedelta
 from hashlib import md5
 
 import requests
-
 from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout

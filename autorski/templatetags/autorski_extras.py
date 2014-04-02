@@ -1,5 +1,4 @@
 from django import template
-from autorski.models import Joke
 
 
 register = template.Library()

@@ -3,7 +3,7 @@ html, body {
 }
 
 .wrap {
-  min-height: 100%;
+    min-height: 100%;
 }
 
 .container-fluid {
@@ -12,19 +12,19 @@ html, body {
 }
 
 .hash-link {
-color: #555;
+    color: #555;
 }
 
 .hash-link:hover {
-color: #555;
+    color: #555;
 }
 
 .img-joke-source {
-display: none;
+    display: none;
 }
 
 .page-header {
-margin-top: 0;
+    margin-top: 0;
 }
 
 #footer {

@@ -54,7 +54,7 @@ function update_votes(pk, votes, up) {
 }
 
 function open_login() {
-    setTimeout(function() {
+    setTimeout(function () {
         $("#login-dropdown").click()
     }, 200);
 }

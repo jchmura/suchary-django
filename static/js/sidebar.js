@@ -1,12 +1,12 @@
-function scale_sidebar(){
-	var window_height = $(window).height();
-	var height = $(".sidebar").height();
-	var margin = $("#jokes").offset().left;
-	var top_margin = (window_height - height)/2
-	// alert(margin);
-	var sidebar = $(".sidebar");
-	sidebar.css({'height': height, 'visibility': 'visible', 'max-width': margin/2, 'top': top_margin});
-	// sidebar.css({'visibility': 'visible'});
+function scale_sidebar() {
+    var window_height = $(window).height();
+    var height = $(".sidebar").height();
+    var margin = $("#jokes").offset().left;
+    var top_margin = (window_height - height) / 2
+    // alert(margin);
+    var sidebar = $(".sidebar");
+    sidebar.css({'height': height, 'visibility': 'visible', 'max-width': margin / 2, 'top': top_margin});
+    // sidebar.css({'visibility': 'visible'});
 
 }
 
@@ -20,4 +20,6 @@ function scale_sidebar(){
 //     }, 300);
 // });
 
-$(".vertical_table").each(function(){$(this).height($(this).width())})
+$(".vertical_table").each(function () {
+    $(this).height($(this).width())
+})

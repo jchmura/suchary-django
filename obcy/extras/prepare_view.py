@@ -1,11 +1,11 @@
 from functools import reduce
 import operator
 import datetime
+import time
 
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Q
 from django.utils.timezone import make_aware, get_current_timezone
-import time
 
 from obcy.models import Joke
 
@@ -106,8 +106,9 @@ def all_sites(request, pages=True):
     __add_user(request, context)
 
     last_seen = __last_seen(request)
-    if last_seen and time.time()-last_seen > 1:
-        context.update({'last_seen': make_aware(datetime.datetime.fromtimestamp(last_seen+1), get_current_timezone())})
+    if last_seen and time.time() - last_seen > 1:
+        context.update(
+            {'last_seen': make_aware(datetime.datetime.fromtimestamp(last_seen + 1), get_current_timezone())})
 
     return context
 

@@ -28,9 +28,14 @@
 
 {% load autorski_extras %}
 {% block voting %}
-<div class="pull-right">
-    <button type="button" class="btn {{ joke|upclass:username }} btn-xs btn-voting" {{ joke|updisable:username }} id="up-{{ joke.pk }}" onclick="vote({{ joke.pk }}, 'true')"><span class="glyphicon glyphicon-plus"></span></button>
-    <button type="button" class="btn {{ joke|downclass:username }} btn-xs btn-voting" {{ joke|downdisable:username }} id="down-{{ joke.pk }}" onclick="vote({{ joke.pk }}, 'false')"><span class="glyphicon glyphicon-minus"></span></button>
-</div>
-<div class="clearfix"></div>
+    <div class="pull-right">
+        <button type="button" class="btn {{ joke|upclass:username }} btn-xs btn-voting" {{ joke|updisable:username }}
+                id="up-{{ joke.pk }}" onclick="vote({{ joke.pk }}, 'true')"><span
+                class="glyphicon glyphicon-plus"></span></button>
+        <button type="button"
+                class="btn {{ joke|downclass:username }} btn-xs btn-voting" {{ joke|downdisable:username }}
+                id="down-{{ joke.pk }}" onclick="vote({{ joke.pk }}, 'false')"><span
+                class="glyphicon glyphicon-minus"></span></button>
+    </div>
+    <div class="clearfix"></div>
 {% endblock %}
