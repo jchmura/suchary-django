@@ -26,7 +26,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # in local settings
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 TEMPLATE_DEBUG = True
 TEMPLATE_DIRS = (
@@ -69,10 +69,12 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'south',
     'rest_framework',
     'dajax',
     'dajaxice',
+    'django_extensions',
 
     'obcy',
     'autorski',

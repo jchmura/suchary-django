@@ -11,7 +11,8 @@ def delete_joke(request, pk):
     user = request.user.groups.filter(name='Moderator')
     if user:
         joke = Joke.objects.get(pk=pk)
-        joke.delete()
+        joke.hidden = True
+        joke.save()
         function = 'deleted_joke({})'.format(pk)
     else:
         function = 'alert("User not authorised to remove joke");'

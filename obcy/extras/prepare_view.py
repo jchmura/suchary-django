@@ -88,7 +88,7 @@ def all_sites(request, pages=True):
         reverse = False
 
     context = {}
-    jokes = Joke.objects.filter(duplicate=None)
+    jokes = Joke.objects.filter(duplicate=None).filter(hidden=False)
     search = request.GET.get('q', '')
     if search.strip() != '':
         items = search.split()
@@ -123,7 +123,7 @@ def one_joke(request, jokeslug):
 
 
 def random(request):
-    jokes = Joke.objects.filter(duplicate=None).order_by('?')
+    jokes = Joke.objects.filter(duplicate=None).filter(hidden=False).order_by('?')
     jokes = __add_pages(request, jokes)
     context = {'jokes': jokes, 'site': 'all', 'site_image_extension': SITE_IMAGE_EXTENSION, 'random': True}
     __add_user(request, context)
