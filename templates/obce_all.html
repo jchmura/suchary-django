@@ -24,8 +24,9 @@
 
                 {% mod_joke joke.pk %}
                 <a href="{{ joke.url }}">
-                    <span class="pull-right"><img class="img-joke-source"
-                                                  src="{{ MEDIA_URL }}images/{{ joke.site }}_small.{{ site_image_extension|lookup:joke.site }}"></span>
+                    <span class="pull-right">
+                        <img class="img-joke-source" alt="Źródło" src="{{ MEDIA_URL }}images/{{ joke.site }}_small.{{ site_image_extension|lookup:joke.site }}">
+                    </span>
                 </a>
 
             </div>
@@ -43,7 +44,7 @@
             var height = $(".panel-heading").height();
             $(".img-joke-source").css({'height': height}).show();
         }
-        $(window).bind('orientationchange', function (e) {
+        $(window).bind('orientationchange', function () {
             scale_images();
         });
         $(document).ready(function () {

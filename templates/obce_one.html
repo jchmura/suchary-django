@@ -15,7 +15,7 @@
             <span class="badge"><b>{{ joke.votes }}</b></span>&nbsp;
             <small><a href="/obcy/{{ joke.key }}" class="hash-link">{{ joke.date }}</a></small>
             <a href="{{ joke.url }}">
-                <img class="pull-right img-responsive img-joke-source"
+                <img class="pull-right img-responsive img-joke-source" alt="Źródło"
                      src="{{ MEDIA_URL }}images/{{ joke.site }}_small.{{ site_image_extension }}">
             </a>
         </div>
@@ -32,7 +32,7 @@
             var height = $(".panel-heading").height();
             $(".img-joke-source").css({'height': height}).show();
         }
-        $(window).bind('orientationchange', function (e) {
+        $(window).bind('orientationchange', function () {
             scale_images();
         });
         $(document).ready(function () {
