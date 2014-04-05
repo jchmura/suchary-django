@@ -122,9 +122,10 @@ def one_joke(request, jokeslug):
     return context
 
 
-def random(request):
+def random(request, pages=True):
     jokes = Joke.objects.filter(duplicate=None).filter(hidden=False).order_by('?')
-    jokes = __add_pages(request, jokes)
+    if pages:
+        jokes = __add_pages(request, jokes)
     context = {'jokes': jokes, 'site': 'all', 'site_image_extension': SITE_IMAGE_EXTENSION, 'random': True}
     __add_user(request, context)
     return context

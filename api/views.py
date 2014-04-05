@@ -20,6 +20,15 @@ class AllViewSet(viewsets.ReadOnlyModelViewSet):
         return prepare_view.one_joke(self.request, self.kwargs['key'])['joke']
 
 
+class RandomJokes(viewsets.ReadOnlyModelViewSet):
+    serializer_class = ObcyJokeSerializer
+    lookup_field = 'key'
+    paginate_by_param = 'limit'
+
+    def get_queryset(self):
+        return prepare_view.random(self.request, pages=False)['jokes']
+
+
 @csrf_exempt
 @require_POST
 def register_device(request):

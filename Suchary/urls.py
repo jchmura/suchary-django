@@ -3,7 +3,7 @@ from django.views.generic.base import RedirectView
 from rest_framework import routers
 from django.contrib import admin
 
-from api.views import AllViewSet
+from api.views import AllViewSet, RandomJokes
 
 
 admin.autodiscover()
@@ -14,6 +14,7 @@ dajaxice_autodiscover()
 
 router = routers.DefaultRouter()
 router.register(r'obcy', AllViewSet, 'obcy')
+router.register(r'random', RandomJokes, 'random')
 
 urlpatterns = patterns(
     '',
