@@ -41,8 +41,6 @@ urlpatterns = patterns(
     # other
     url(r'^favicon\.ico$', RedirectView.as_view(url='/media/images/favicon.ico')),
     url(r'^apk/$', RedirectView.as_view(url='/media/files/suchary.apk')),
-    url(r'^test/$', 'autorski.views.test'),
-
 )
 
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns

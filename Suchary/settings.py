@@ -75,6 +75,7 @@ INSTALLED_APPS = (
     'dajax',
     'dajaxice',
     'django_extensions',
+    'django_filters',
 
     'obcy',
     'autorski',
@@ -130,4 +131,5 @@ REST_FRAMEWORK = {
     'DEFAULT_MODEL_SERIALIZER_CLASS':
         'rest_framework.serializers.HyperlinkedModelSerializer',
     'PAGINATE_BY': 15,
+    'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',),
 }

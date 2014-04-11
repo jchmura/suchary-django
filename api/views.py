@@ -1,15 +1,28 @@
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
+import django_filters
 from rest_framework import viewsets
 
+from obcy.models import Joke
 from obcy.extras import prepare_view
 from api.serializers import ObcyJokeSerializer
 from api.models import Device
 
 
+class ObcyJokeFilter(django_filters.FilterSet):
+    before = django_filters.DateTimeFilter(name='added', lookup_type='lte')
+    after = django_filters.DateTimeFilter(name='added', lookup_type='gte')
+    min_votes = django_filters.NumberFilter(lookup_type='gte')
+
+    class Meta:
+        model = Joke
+        fields = ['after', 'before', 'min_votes']
+
+
 class AllViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = ObcyJokeSerializer
+    filter_class = ObcyJokeFilter
     lookup_field = 'key'
     paginate_by_param = 'limit'
 

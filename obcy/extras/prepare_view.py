@@ -83,9 +83,7 @@ def all_sites(request, pages=True):
 
     reverse = request.GET.get('reversed', True)
     if reverse != 'true':
-        reverse = True
-    else:
-        reverse = False
+        sort = '-' + sort
 
     context = {}
     jokes = Joke.objects.filter(duplicate=None).filter(hidden=False)
@@ -96,7 +94,7 @@ def all_sites(request, pages=True):
         jokes = jokes.filter(filter)
         context.update({'search': search})
 
-    jokes = sorted(jokes, key=lambda joke: __sort_recalculate(sort, joke), reverse=reverse)
+    jokes = jokes.order_by(sort)
     if pages:
         jokes = __add_pages(request, jokes)
     context.update({'jokes': jokes, 'site': 'all'})
