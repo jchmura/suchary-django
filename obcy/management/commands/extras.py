@@ -123,7 +123,3 @@ def strip_tags(body):
 
     body = '\n'.join(lines)
     return body
-
-
-def notify_devices(number, last, keys):
-    new_jokes(number, last, keys)

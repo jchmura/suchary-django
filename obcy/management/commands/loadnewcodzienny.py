@@ -6,8 +6,9 @@ from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.utils import timezone
 import pytz
+from api.commands import new_jokes
 
-from obcy.management.commands.extras import inputJSON, check_if_duplicate, remove_dots, notify_devices
+from obcy.management.commands.extras import inputJSON, check_if_duplicate, remove_dots
 from obcy.models import Joke
 
 
@@ -35,7 +36,6 @@ class Command(BaseCommand):
         super(Command, self).__init__()
         self.new_count = 0
         self.update_count = 0
-        self.new_keys = []
 
     def handle(self, *args, **options):
         data = json.load(open(os.path.join(settings.BASE_DIR, 'data/codzienny.json'), 'r'), object_hook=inputJSON)
@@ -47,7 +47,6 @@ class Command(BaseCommand):
                 new_joke = _create_model_object(joke)
                 if not check_if_duplicate(new_joke, jokes):
                     self.new_count += 1
-                    self.new_keys.append(new_joke.key)
             else:
                 old_joke = Joke.objects.get(key=joke['id'])
                 new_votes = joke['votes']
@@ -57,8 +56,7 @@ class Command(BaseCommand):
                     self.update_count += 1
 
         if self.new_count:
-            last = Joke.objects.latest('added')
-            notify_devices(self.new_count, last.body, self.new_keys)
+            new_jokes()
 
         self.stdout.write('Successfully added %d new jokes' % self.new_count)
         self.stdout.write('Successfully updated %d jokes' % self.update_count)

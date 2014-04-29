@@ -28,14 +28,11 @@ def edit_joke(key):
     send(data)
 
 
-def new_jokes(count, last, keys):
+def new_jokes():
     data = {
-        'type': 'new',
-        'count': count,
-        'body': last,
-        'keys': ' '.join(keys)
+        'type': 'new'
     }
-    send(data)
+    send(data, 'new')
 
 
 def delete_joke(key):
