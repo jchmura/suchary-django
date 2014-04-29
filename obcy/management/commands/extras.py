@@ -1,12 +1,6 @@
 from datetime import datetime
 from html.parser import HTMLParser
-import json
-
-import requests
-
-from api.models import Device
-
-from Suchary.settings import GCM_API_KEY
+from api.commands import new_jokes
 
 
 __author__ = 'kuba'
@@ -131,14 +125,5 @@ def strip_tags(body):
     return body
 
 
-def notify_devices(number, last):
-    url = 'https://android.googleapis.com/gcm/send'
-    header = {'Authorization': 'key=' + GCM_API_KEY, 'Content-Type': 'application/json'}
-
-    reg_ids = [device.registration_id for device in Device.objects.filter(active=True)]
-    payload = {'registration_ids': reg_ids,
-               'data': {
-                   'body': last,
-                   'number': number
-               }}
-    r = requests.post(url, data=json.dumps(payload), headers=header)
+def notify_devices(number, last, keys):
+    new_jokes(number, last, keys)

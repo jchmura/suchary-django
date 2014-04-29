@@ -1,5 +1,6 @@
 from dajaxice.decorators import dajaxice_register
 from dajax.core import Dajax
+from api.commands import edited_joke
 
 from obcy.models import Joke
 
@@ -14,6 +15,7 @@ def delete_joke(request, pk):
         joke.hidden = True
         joke.save()
         function = 'deleted_joke({})'.format(pk)
+        edited_joke(joke.key)
     else:
         function = 'alert("User not authorised to remove joke");'
 
