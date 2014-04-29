@@ -1,5 +1,6 @@
 import json
 import os
+from time import sleep
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
@@ -42,6 +43,7 @@ class Command(BaseCommand):
 
         for joke in data:
             if len(Joke.objects.filter(key=joke['id'])) == 0:
+                sleep(2)
                 new_joke = _create_model_object(joke)
                 if not check_if_duplicate(new_joke, jokes):
                     self.new_count += 1
