@@ -20,7 +20,7 @@ def send(data, collapse_key=None):
     r = requests.post(URL, data=json.dumps(payload), headers=HEADER)
 
 
-def edited_joke(key):
+def edit_joke(key):
     data = {
         'type': 'edit',
         'key': key
@@ -34,5 +34,13 @@ def new_jokes(count, last, keys):
         'count': count,
         'body': last,
         'keys': ' '.join(keys)
+    }
+    send(data)
+
+
+def delete_joke(key):
+    data = {
+        'type': 'delete',
+        'key': key
     }
     send(data)

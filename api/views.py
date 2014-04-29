@@ -11,8 +11,8 @@ from api.models import Device
 
 
 class ObcyJokeFilter(django_filters.FilterSet):
-    before = django_filters.DateTimeFilter(name='added', lookup_type='lte')
-    after = django_filters.DateTimeFilter(name='added', lookup_type='gte')
+    before = django_filters.DateTimeFilter(name='added', lookup_type='lt')
+    after = django_filters.DateTimeFilter(name='added', lookup_type='gt')
     min_votes = django_filters.NumberFilter(lookup_type='gte')
 
     class Meta:
