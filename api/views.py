@@ -46,12 +46,14 @@ class RandomJokes(viewsets.ReadOnlyModelViewSet):
 @require_POST
 def register_device(request):
     registration_id = request.POST.get('registration_id')
+    android_id = request.POST.get('android_id')
     try:
-        device = Device.objects.get(registration_id=registration_id)
+        device = Device.objects.get(android_id=android_id)
+        device.registration_id = registration_id
         device.active = True
         device.save()
     except Device.DoesNotExist:
-        Device.objects.create(registration_id=registration_id)
+        Device.objects.create(registration_id=registration_id, android_id=android_id)
     return HttpResponse(status=201)
 
 

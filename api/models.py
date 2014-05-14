@@ -8,6 +8,7 @@ from Suchary.settings import GCM_API_KEY
 
 class Device(models.Model):
     registration_id = models.TextField()
+    android_id = models.TextField(unique=True)
     active = models.BooleanField(default=True)
     last_used = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
