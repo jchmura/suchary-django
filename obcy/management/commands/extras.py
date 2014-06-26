@@ -1,9 +1,6 @@
 from datetime import datetime
 from html.parser import HTMLParser
-from api.commands import new_jokes
-
-
-__author__ = 'kuba'
+import re
 
 
 def compare(set1, set2):
@@ -21,30 +18,30 @@ def compare(set1, set2):
         return False
 
 
-def inputJSON(obj):
-    newDic = {}
+def input_json(obj):
+    new_dic = {}
 
     for key in obj:
         try:
             if float(key) == int(float(key)):
-                newKey = int(key)
+                new_key = int(key)
             else:
-                newKey = float(key)
+                new_key = float(key)
 
-            newDic[newKey] = obj[key]
+            new_dic[new_key] = obj[key]
             continue
         except ValueError:
             pass
 
         try:
-            newDic[str(key)] = datetime.strptime(obj[key], '%Y-%m-%d %H:%M:%S')
+            new_dic[str(key)] = datetime.strptime(obj[key], '%Y-%m-%d %H:%M:%S')
             continue
         except (TypeError, ValueError):
             pass
 
-        newDic[str(key)] = obj[key]
+        new_dic[str(key)] = obj[key]
 
-    return newDic
+    return new_dic
 
 
 def count_number(set1, set2):
@@ -55,7 +52,7 @@ def count_number(set1, set2):
     return count
 
 
-def check_if_duplicate(joke, jokes):
+def is_duplicate(joke, jokes):
     set1 = set(joke.body.split())
 
     for second_joke in jokes:
@@ -115,11 +112,15 @@ def strip_tags(body):
         del lines[0]
 
     for i, line in reversed(list(enumerate(lines))):
-        lines[i] = line.lstrip()
-        if line == '':
+        lines[i] = line.strip()
+        if not line:
             del lines[i]
         else:
             break
 
     body = '\n'.join(lines)
     return body
+
+
+def insert_spaces(body):
+    return re.sub(r'^-([^\s].+)', r'- \1', body.strip(), flags=re.MULTILINE)
