@@ -54,7 +54,7 @@ def register_device(request):
         device.save()
     except Device.DoesNotExist:
         Device.objects.create(registration_id=registration_id, android_id=android_id)
-    return HttpResponse(status=201)
+    return HttpResponse(status=200)
 
 
 @csrf_exempt
