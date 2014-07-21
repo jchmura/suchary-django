@@ -41,3 +41,12 @@ def delete_joke(key):
         'key': key
     }
     send(data)
+
+
+def send_message(title, body):
+    data = {
+        'type': 'message',
+        'title': title,
+        'text': body
+    }
+    send(data)
