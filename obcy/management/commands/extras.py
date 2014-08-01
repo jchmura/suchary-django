@@ -68,23 +68,6 @@ def is_duplicate(joke, jokes):
         return False
 
 
-def remove_dots(body):
-    lines = body.split('\n')
-    enter = False
-    for i, s in reversed(list(enumerate(lines))):
-        if len(s.strip()) == 1:
-            if not enter:
-                lines[i] = ''
-                enter = True
-            else:
-                del lines[i]
-        elif s == '':
-            del lines[i]
-
-    body = '\n'.join(lines)
-    return body
-
-
 class HTMLStripper(HTMLParser):
     def __init__(self):
         super(HTMLStripper, self).__init__()
@@ -97,30 +80,70 @@ class HTMLStripper(HTMLParser):
         return self.text
 
 
-def strip_tags(body):
+def clean_content(body):
+    body = strip_tags(body)
+    body = remove_dots(body)
+    body = remove_head(body)
+    body = insert_spaces(body)
+    return body
+
+
+def remove_dots(body):
     lines = body.split('\n')
+    enter = False
+    for i, s in reversed(list(enumerate(lines))):
+        if len(s.strip()) == 1 or s == '':
+            if not enter:
+                lines[i] = ''
+                enter = True
+            else:
+                del lines[i]
+
+    body = '\n'.join(lines)
+    return body
+
+
+def strip_tags(body):
+    """Delete the first and last line if they full of hashtags.
+    Also strip every line of unnecessary whitespaces."""
+    lines = body.split('\n')
+
+    # remove last line if full of hashtags
     for word in lines[-1].split():
         if word[0] != '#':
             break
     else:
         del lines[-1]
 
+    # remove first line if full of hashtags
     for word in lines[0].split():
         if word[0] != '#':
             break
     else:
         del lines[0]
 
-    for i, line in reversed(list(enumerate(lines))):
-        lines[i] = line.strip()
-        if not line:
-            del lines[i]
-        else:
-            break
+    # strip spaces from every line
+    lines = [line.strip() for line in lines]
 
     body = '\n'.join(lines)
     return body
 
 
+def remove_head(body):
+    """Remove the first one or two lines if they contains '#number'"""
+    lines = body.split('\n')
+    if len(lines) < 2:
+        return body
+
+    for i in range(2):
+        line = lines[i]
+        if re.match(r'.*#\d+.*', line) is not None:
+            lines = lines[i+1:]
+            break
+
+    return '\n'.join(lines)
+
+
 def insert_spaces(body):
+    """Insert space between dash and the next letter at the beginning of the line"""
     return re.sub(r'^-([^\s].+)', r'- \1', body.strip(), flags=re.MULTILINE)

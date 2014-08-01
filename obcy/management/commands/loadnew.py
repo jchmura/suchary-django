@@ -8,8 +8,7 @@ from django.utils import timezone
 import pytz
 
 from api.commands import new_jokes
-from obcy.management.commands.extras import input_json, is_duplicate, remove_dots, HTMLStripper, strip_tags, \
-    insert_spaces
+from obcy.management.commands.extras import input_json, is_duplicate, HTMLStripper, clean_content
 from obcy.models import Joke
 
 
@@ -31,12 +30,12 @@ class Command(BaseCommand):
             url = joke['url']
             parser = HTMLStripper()
             parser.feed(joke['body'])
-            body = strip_tags(parser.get_text())
+            body = parser.get_text()
         else:
             url = 'http://facebook.com/' + key.replace("_", "/posts/")
-            body = remove_dots(joke['body'])
+            body = joke['body']
 
-        body = insert_spaces(body)
+        body = clean_content(body)
 
         j = Joke(site=self.site, key=key, slug=key, url=url, votes=votes, date=date, body=body, added=added)
         j.save()
