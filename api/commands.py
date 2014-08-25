@@ -1,19 +1,25 @@
 import json
+
 import requests
+
 from Suchary.local_settings import GCM_API_KEY
 from api.models import Device
+
 
 URL = 'https://android.googleapis.com/gcm/send'
 HEADER = {'Authorization': 'key=' + GCM_API_KEY, 'Content-Type': 'application/json'}
 
 
-def get_reg_ids():
-    reg_ids = [device.registration_id for device in Device.objects.filter(active=True)]
+def get_reg_ids(alias):
+    devices = Device.objects.filter(active=True)
+    if alias:
+        devices = devices.filter(alias=alias)
+    reg_ids = [device.registration_id for device in devices]
     return reg_ids
 
 
-def send(data, collapse_key=None):
-    reg_ids = get_reg_ids()
+def send(data, collapse_key=None, to=None):
+    reg_ids = get_reg_ids(to)
     payload = {'registration_ids': reg_ids, 'data': data}
     if collapse_key is not None:
         payload.update({'collapse_key': collapse_key})
@@ -43,10 +49,10 @@ def delete_joke(key):
     send(data)
 
 
-def send_message(title, body):
+def send_message(title, body, alias=None):
     data = {
         'type': 'message',
         'title': title,
         'text': body
     }
-    send(data)
+    send(data, to=alias)
