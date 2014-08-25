@@ -137,11 +137,20 @@ def remove_head(body):
 
     for i in range(2):
         line = lines[i]
-        if re.match(r'.*#\d+.*', line) is not None:
+        if re.match(r'.*#\d+.*', line) or re.match(r'.*[:;xX][DdpP].*', line) or is_personal(line):
             lines = lines[i+1:]
             break
 
     return '\n'.join(lines)
+
+
+def is_personal(line):
+    """Check if the line have personal reference suggesting it is an useless introduction"""
+    personal_words = ['mój', 'moj', 'moje', 'moja', 'twój', 'twoj', 'twoje', 'twoja']
+    for word in line:
+        if word in personal_words:
+            return True
+    return False
 
 
 def insert_spaces(body):
