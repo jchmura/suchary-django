@@ -3,6 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 import django_filters
 from rest_framework import viewsets
+from user_agents import parse
 
 from obcy.models import Joke
 from obcy.extras import prepare_view
@@ -47,13 +48,23 @@ class RandomJokes(viewsets.ReadOnlyModelViewSet):
 def register_device(request):
     registration_id = request.POST.get('registration_id')
     android_id = request.POST.get('android_id')
+    version = request.POST.get('version', '0.3.0')
+    user_agent = parse(request.META['HTTP_USER_AGENT'])
+    model = user_agent.device.family
+    os_version = user_agent.os.version_string
+    device_type = 'Mobile' if user_agent.is_mobile else 'Tablet'
     try:
         device = Device.objects.get(android_id=android_id)
         device.registration_id = registration_id
+        device.version = version
+        device.model = model
+        device.os_version = os_version
+        device.type = device_type
         device.active = True
         device.save()
     except Device.DoesNotExist:
-        Device.objects.create(registration_id=registration_id, android_id=android_id)
+        Device.objects.create(registration_id=registration_id, android_id=android_id, version=version, model=model,
+                              os_version=os_version, type=device_type)
     return HttpResponse(status=200)
 
 
