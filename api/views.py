@@ -1,7 +1,7 @@
 import logging
-import datetime
 
 from django.http import HttpResponse
+from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 import django_filters
@@ -71,7 +71,7 @@ def register_device(request):
         device.os_version = os_version
         device.type = device_type
         device.active = True
-        device.last_seen = datetime.datetime.now()
+        device.last_seen = timezone.localtime(timezone.now())
         device.save()
     except Device.DoesNotExist:
         Device.objects.create(registration_id=registration_id, android_id=android_id, version=version, model=model,
