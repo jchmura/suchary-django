@@ -7,6 +7,10 @@ https://docs.djangoproject.com/en/1.6/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.6/ref/settings/
 """
+import logging
+
+from Suchary.logging.filters import RangeFilter
+
 
 try:
     from .local_settings import *
@@ -132,4 +136,56 @@ REST_FRAMEWORK = {
         'rest_framework.serializers.HyperlinkedModelSerializer',
     'PAGINATE_BY': 15,
     'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',),
+}
+
+LOG_DIR = '/srv/http/www/suchary/logs/django'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'simple': {
+            'format': '%(asctime)s %(levelname)-8s %(name)-15s %(message)s',
+            'datefmt': '%Y-%m-%d %H:%M:%S'
+        }
+    },
+    'filters': {
+        'info': {
+            '()': RangeFilter,
+            'min': logging.INFO,
+            'max': logging.INFO
+        },
+        'warning': {
+            '()': RangeFilter,
+            'min': logging.WARNING
+        }
+    },
+    'handlers': {
+        'all': {
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': LOG_DIR + '/all.log',
+            'when': 'midnight',
+            'formatter': 'simple'
+        },
+        'info': {
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': LOG_DIR + '/info.log',
+            'when': 'midnight',
+            'formatter': 'simple',
+            'filters': ['info']
+        },
+        'warning': {
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': LOG_DIR + '/warning.log',
+            'when': 'midnight',
+            'formatter': 'simple',
+            'filters': ['warning']
+        }
+    },
+    'loggers': {
+        '': {
+            'level': 'DEBUG',
+            'handlers': ['all', 'info', 'warning'],
+        },
+    }
 }
