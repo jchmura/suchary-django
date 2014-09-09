@@ -1,4 +1,5 @@
 import json
+import logging
 import os
 from time import sleep
 
@@ -10,6 +11,9 @@ import pytz
 from api.commands import new_jokes
 from obcy.management.commands.extras import input_json, is_duplicate, HTMLStripper, clean_content
 from obcy.models import Joke
+
+
+logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
@@ -56,6 +60,7 @@ class Command(BaseCommand):
             if len(Joke.objects.filter(key=joke['id'])) == 0:
                 sleep(2)
                 new_joke = self.create_joke(joke)
+                logger.info('Created new joke: %s from site %s', new_joke.key, joke.site)
                 if not is_duplicate(new_joke, jokes):
                     self.new_count += 1
             else:

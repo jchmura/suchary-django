@@ -1,4 +1,5 @@
 import json
+import logging
 
 import requests
 
@@ -8,6 +9,8 @@ from api.models import Device
 
 URL = 'https://android.googleapis.com/gcm/send'
 HEADER = {'Authorization': 'key=' + GCM_API_KEY, 'Content-Type': 'application/json'}
+
+logger = logging.getLogger(__name__)
 
 
 def get_reg_ids(alias):
@@ -23,7 +26,9 @@ def send(data, collapse_key=None, to=None):
     payload = {'registration_ids': reg_ids, 'data': data}
     if collapse_key is not None:
         payload.update({'collapse_key': collapse_key})
+    logger.debug('Sending GCM data:\n%s\nto %d devices with collapse key %s', data, len(reg_ids), collapse_key)
     r = requests.post(URL, data=json.dumps(payload), headers=HEADER)
+    logger.debug('GCM response:\n%s', r.text)
 
 
 def edit_joke(key):

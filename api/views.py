@@ -1,3 +1,5 @@
+import logging
+
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
@@ -9,6 +11,9 @@ from obcy.models import Joke
 from obcy.extras import prepare_view
 from api.serializers import ObcyJokeSerializer
 from api.models import Device
+
+
+logger = logging.getLogger(__name__)
 
 
 class ObcyJokeFilter(django_filters.FilterSet):
@@ -53,6 +58,10 @@ def register_device(request):
     model = user_agent.device.family
     os_version = user_agent.os.version_string
     device_type = 'Mobile' if user_agent.is_mobile else 'Tablet'
+    ip = get_client_ip(request)
+    logger.info(
+        'register request from %s\nandroid_id = %s\napp_version = %s\nuser_agent = %s\nmodel = %s\nos_version = %s',
+        ip, android_id, version, user_agent, model, os_version)
     try:
         device = Device.objects.get(android_id=android_id)
         device.registration_id = registration_id
@@ -65,6 +74,7 @@ def register_device(request):
     except Device.DoesNotExist:
         Device.objects.create(registration_id=registration_id, android_id=android_id, version=version, model=model,
                               os_version=os_version, type=device_type)
+        logger.info('Registered new device: %s', android_id)
     return HttpResponse(status=200)
 
 
@@ -79,3 +89,12 @@ def deactivate_device(request):
     except Device.DoesNotExist:
         pass
     return HttpResponse(status=200)
+
+
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
