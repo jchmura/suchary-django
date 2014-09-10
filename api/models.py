@@ -16,7 +16,7 @@ class Device(models.Model):
     type = models.CharField(max_length=20)
     active = models.BooleanField(default=True)
     last_used = models.DateTimeField(auto_now=True)
-    last_seen = models.DateTimeField()
+    last_seen = models.DateTimeField(auto_now_add=True)
     created = models.DateTimeField(auto_now_add=True)
 
     def send_data(self, data):
