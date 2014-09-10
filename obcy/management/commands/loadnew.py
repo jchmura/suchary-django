@@ -60,7 +60,7 @@ class Command(BaseCommand):
             if len(Joke.objects.filter(key=joke['id'])) == 0:
                 sleep(2)
                 new_joke = self.create_joke(joke)
-                logger.info('Created new joke: %s from site %s', new_joke.key, joke.site)
+                logger.info('Created new joke: %s from site %s', new_joke.key, new_joke.site)
                 if not is_duplicate(new_joke, jokes):
                     self.new_count += 1
             else:
