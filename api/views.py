@@ -60,7 +60,7 @@ def register_device(request):
     os_version = user_agent.os.version_string
     device_type = 'Mobile' if user_agent.is_mobile else 'Tablet'
     ip = get_client_ip(request)
-    logger.info(
+    logger.debug(
         'register request from %s\nandroid_id = %s\napp_version = %s\nuser_agent = %s\nmodel = %s\nos_version = %s',
         ip, android_id, version, user_agent, model, os_version)
     try:
@@ -73,6 +73,7 @@ def register_device(request):
         device.active = True
         device.last_seen = timezone.localtime(timezone.now())
         device.save()
+        logger.debug('Device %s marked as last seen on %s', device.android_id, device.last_seen)
     except Device.DoesNotExist:
         Device.objects.create(registration_id=registration_id, android_id=android_id, version=version, model=model,
                               os_version=os_version, type=device_type)
