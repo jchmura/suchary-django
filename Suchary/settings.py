@@ -61,7 +61,7 @@ STATICFILES_FINDERS = (
     'dajaxice.finders.DajaxiceFinder',
 )
 
-ALLOWED_HOSTS = ['suchary.jakubchmura.pl']
+ALLOWED_HOSTS = ['suchary.jakubchmura.pl', '95.85.63.30']
 
 
 # Application definition

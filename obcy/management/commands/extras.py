@@ -70,7 +70,7 @@ def is_duplicate(joke, jokes):
 
 class HTMLStripper(HTMLParser):
     def __init__(self):
-        super(HTMLStripper, self).__init__()
+        super(HTMLStripper, self).__init__(convert_charrefs=False)
         self.text = ""
 
     def handle_data(self, data):

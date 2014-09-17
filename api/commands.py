@@ -76,4 +76,4 @@ def handle_gcm_response(r, reg_ids):
                 device = Device.objects.get(registration_id=reg_id)
                 device.active = False
                 device.save()
-                logger.warn('Device %s is not registered', device.pk)
+                logger.warning('Device %s is not registered', device.pk)
