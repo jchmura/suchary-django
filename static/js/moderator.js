@@ -84,3 +84,27 @@ function edited_joke(pk) {
     old_text = $("#joke-" + pk + " > .panel-body > textarea").val().replace(/\n/g, "<br>");
     edit_joke_off(pk)
 }
+
+function clean_joke(app, pk) {
+    var panel = $("#joke-" + pk + " > div.panel-body");
+    var paragraph = panel.children('p');
+    var body = paragraph.html().replace(/<br>/g, '\n');
+    if (app == 'obcy') {
+        $.ajax({
+            url: '/obcy/clean',
+            type: 'GET',
+            data: {
+                body: body
+            },
+            success: function(data) {
+                edit_joke_on(app, pk);
+                var textArea = panel.children('textarea');
+                textArea.val(data.cleaned);
+            },
+            error: function(xhr, status, errorThrown) {
+                console.log("Error: " + errorThrown);
+                console.log("Status: " + status);
+            }
+        });
+    }
+}

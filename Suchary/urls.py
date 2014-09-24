@@ -23,6 +23,7 @@ urlpatterns = patterns(
         RedirectView.as_view(url='http://suchary.jakubchmura.pl/obcy/%(key)s', permanent=True)),
     url(r'^obcy/edit/(?P<pk>.+)$', 'obcy.views.edit_joke'),
     url(r'^obcy/delete/(?P<pk>.+)$', 'obcy.views.delete_joke'),
+    url(r'^obcy/clean$', 'obcy.views.clean_joke'),
     # autorski
     url(r'^autorskie/$', 'autorski.views.all_jokes'),
     url(r'^autorskie/(?P<jokeslug>.+)/$', 'autorski.views.one_joke'),

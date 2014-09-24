@@ -4,10 +4,11 @@ import logging
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.template import RequestContext
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_POST, require_GET
 
 from obcy.extras import prepare_view
 from obcy.models import Joke
+from obcy.management.commands.extras import clean_content
 from api.commands import edit_joke as api_edit_joke
 from api.commands import delete_joke as api_remove_joke
 
@@ -60,6 +61,17 @@ def delete_joke(request, pk):
         return HttpResponse(status=200)
     else:
         return HttpResponse('User not authorised to remove joke')
+
+
+@require_GET
+def clean_joke(request):
+    body = request.GET.get('body', '')
+    if not body:
+        return HttpResponse(status=400)
+    cleaned = clean_content(body)
+    if cleaned != body:
+        logger.debug('Cleaned body:\n%s\n------\n%s', body, cleaned)
+    return json_response({'cleaned': cleaned})
 
 
 def json_response(data=None, status_code=200):
