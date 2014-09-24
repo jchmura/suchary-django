@@ -3,7 +3,17 @@ function delete_joke(app, pk) {
     var message = "Detele joke?\n\n" + body;
     if (confirm(message)) {
         if (app == 'obcy') {
-            Dajaxice.obcy.delete_joke(Dajax.process, {'pk': pk});
+            $.ajax({
+                url: '/obcy/delete/' + pk,
+                type: 'POST',
+                success: function() {
+                    deleted_joke(pk)
+                },
+                error: function(xhr, status, errorThrown) {
+                    console.log("Error: " + errorThrown);
+                    console.log("Status: " + status);
+                }
+            });
         }
     }
 
@@ -53,7 +63,20 @@ function send_edit(app, pk) {
     textarea.attr('disabled', 'disabled');
     $("#joke-" + pk + " > .panel-body > button").hide();
     if (app == 'obcy') {
-        Dajaxice.obcy.edit_joke(Dajax.process, {'pk': pk, 'body': body});
+        $.ajax({
+            url: '/obcy/edit/' + pk,
+            type: 'POST',
+            data: {
+                body: body
+            },
+            success: function() {
+                edited_joke(pk)
+            },
+            error: function(xhr, status, errorThrown) {
+                console.log("Error: " + errorThrown);
+                console.log("Status: " + status);
+            }
+        });
     }
 }
 

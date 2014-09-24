@@ -8,10 +8,6 @@ from api.views import AllViewSet, RandomJokes
 
 admin.autodiscover()
 
-from dajaxice.core import dajaxice_autodiscover, dajaxice_config
-
-dajaxice_autodiscover()
-
 router = routers.DefaultRouter()
 router.register(r'obcy', AllViewSet, 'obcy')
 router.register(r'random', RandomJokes, 'random')
@@ -19,13 +15,14 @@ router.register(r'random', RandomJokes, 'random')
 urlpatterns = patterns(
     '',
     url(r'^admin/', include(admin.site.urls)),
-    url(dajaxice_config.dajaxice_url, include('dajaxice.urls')),
     # obcy
     url(r'^$', 'obcy.views.all_sites'),
     url(r'^obcy/random/$', 'obcy.views.all_random'),
     url(r'^obcy/(?P<jokeslug>.+)/$', 'obcy.views.one_joke'),
     url(r'^(wykop|codzienny|zacny)/(?P<key>.+)$',
         RedirectView.as_view(url='http://suchary.jakubchmura.pl/obcy/%(key)s', permanent=True)),
+    url(r'^obcy/edit/(?P<pk>.+)$', 'obcy.views.edit_joke'),
+    url(r'^obcy/delete/(?P<pk>.+)$', 'obcy.views.delete_joke'),
     # autorski
     url(r'^autorskie/$', 'autorski.views.all_jokes'),
     url(r'^autorskie/(?P<jokeslug>.+)/$', 'autorski.views.one_joke'),

@@ -58,7 +58,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'dajaxice.finders.DajaxiceFinder',
 )
 
 ALLOWED_HOSTS = ['suchary.jakubchmura.pl', '95.85.63.30']
@@ -76,8 +75,6 @@ INSTALLED_APPS = (
 
     'south',
     'rest_framework',
-    'dajax',
-    'dajaxice',
     'django_extensions',
     'django_filters',
 
