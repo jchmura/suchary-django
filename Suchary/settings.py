@@ -159,22 +159,22 @@ LOGGING = {
     },
     'handlers': {
         'all': {
-            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'class': 'logging.handlers.RotatingFileHandler',
             'filename': LOG_DIR + '/all.log',
-            'when': 'midnight',
+            'maxBytes': 1024 * 1024,
             'formatter': 'simple'
         },
         'info': {
-            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'class': 'logging.handlers.RotatingFileHandler',
             'filename': LOG_DIR + '/info.log',
-            'when': 'midnight',
+            'maxBytes': 1024 * 1024,
             'formatter': 'simple',
             'filters': ['info']
         },
         'warning': {
-            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'class': 'logging.handlers.RotatingFileHandler',
             'filename': LOG_DIR + '/warning.log',
-            'when': 'midnight',
+            'maxBytes': 1024 * 1024,
             'formatter': 'simple',
             'filters': ['warning']
         }
