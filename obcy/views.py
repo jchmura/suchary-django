@@ -4,6 +4,7 @@ import logging
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.template import RequestContext
+from django.utils import timezone
 from django.views.decorators.http import require_POST, require_GET
 
 from obcy.extras import prepare_view
@@ -72,6 +73,32 @@ def clean_joke(request):
     if cleaned != body:
         logger.debug('Cleaned body:\n%s\n------\n%s', body, cleaned)
     return json_response({'cleaned': cleaned})
+
+
+@require_POST
+def verify_joke(request, pk):
+    user = request.user.groups.filter(name='Moderator')
+    if user:
+        joke = Joke.objects.get(pk=pk)
+        joke.verified = timezone.localtime(timezone.now())
+        joke.save()
+        logger.info('Joke %s verified.', joke.key)
+        return HttpResponse(status=200)
+    else:
+        return HttpResponse('User not authorised to verify joke')
+
+
+@require_POST
+def unverify_joke(request, pk):
+    user = request.user.groups.filter(name='Moderator')
+    if user:
+        joke = Joke.objects.get(pk=pk)
+        joke.verified = None
+        joke.save()
+        logger.info('Joke %s unverified.', joke.key)
+        return HttpResponse(status=200)
+    else:
+        return HttpResponse('User not authorised to unverify joke')
 
 
 def json_response(data=None, status_code=200):

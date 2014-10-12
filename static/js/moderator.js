@@ -108,3 +108,58 @@ function clean_joke(app, pk) {
         });
     }
 }
+
+function verify_joke(app, pk) {
+    if (app === 'obcy') {
+        $.ajax({
+            url: '/obcy/verify/' + pk,
+            type: 'POST',
+            success: function() {
+                verified_joke(pk)
+            },
+            error: function(xhr, status, errorThrown) {
+                console.log("Error: " + errorThrown);
+                console.log("Status: " + status);
+            }
+        });
+    }
+}
+
+function verified_joke(pk) {
+    var panel = $('#joke-' + pk + ' > div.panel-heading');
+    console.log(panel.find('.glyphicon-ok'));
+    panel.find('.glyphicon-ok')
+        .removeClass('glyphicon-ok')
+        .addClass('glyphicon-remove')
+        .attr('title', 'Unverify')
+        .click(function() {
+            unverify_joke('obcy', pk);
+        });
+}
+
+function unverify_joke(app, pk) {
+    if (app === 'obcy') {
+        $.ajax({
+            url: '/obcy/unverify/' + pk,
+            type: 'POST',
+            success: function() {
+                unverified_joke(pk)
+            },
+            error: function(xhr, status, errorThrown) {
+                console.log("Error: " + errorThrown);
+                console.log("Status: " + status);
+            }
+        });
+    }
+}
+
+function unverified_joke(pk) {
+    var panel = $('#joke-' + pk + ' > div.panel-heading');
+    panel.find('.glyphicon-remove')
+        .removeClass('glyphicon-remove')
+        .addClass('glyphicon-ok')
+        .attr('title', 'Verify')
+        .click(function() {
+            verify_joke('obcy', pk);
+        });
+}

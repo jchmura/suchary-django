@@ -12,6 +12,7 @@ class Joke(models.Model):
     duplicate = models.ForeignKey('self', blank=True, null=True)
     added = models.DateTimeField()
     hidden = models.BooleanField(default=False)
+    verified = models.DateTimeField(blank=True, null=True, default=None)
 
     def __str__(self):
         return str(self.key)

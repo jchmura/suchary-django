@@ -41,8 +41,8 @@ html, body {
     }
 }
 
-a.delete-joke, a.delete-joke:hover {
-    color: inherit;
+.mod-action {
+    cursor: pointer;
 }
 
 #load-new-random {

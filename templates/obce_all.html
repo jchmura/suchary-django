@@ -22,7 +22,7 @@
                     {% endif %}
                 </small>
 
-                {% mod_joke joke.pk %}
+                {% mod_joke joke.pk joke.verified %}
                 <a href="{{ joke.url }}">
                     <span class="pull-right">
                         <img class="img-joke-source" alt="Źródło" src="{{ MEDIA_URL }}images/{{ joke.site }}_small.{{ site_image_extension|lookup:joke.site }}">
