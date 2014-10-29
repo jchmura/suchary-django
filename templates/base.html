@@ -37,18 +37,13 @@
                 <a class="navbar-brand" href="/">Suchary</a>
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li{% block zajumane %}{% endblock %}><a href="/">Zajumane</a></li>
-                    <li{% block autorskie %}{% endblock %}><a href="/autorskie">Autorskie</a></li>
-
-                </ul>
                 <div class="navbar-right">
                     <ul class="nav navbar-nav">
                         {% include "navbar_account.html" %}
                     </ul>
                     <form class="navbar-form navbar-right" action="" method="get">
                         <input type="text" class="form-control"
-                               placeholder="{% if search %}{{ search }}{% else %}Szukaj{% endif %}" name="q">
+                               placeholder="Szukaj" name="q" {% if search %}value="{{ search }}"{% endif %}>
                     </form>
                 </div>
 
