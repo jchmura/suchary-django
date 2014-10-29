@@ -25,7 +25,6 @@ urlpatterns = patterns(
     url(r'^obcy/delete/(?P<pk>.+)$', 'obcy.views.delete_joke'),
     url(r'^obcy/clean$', 'obcy.views.clean_joke'),
     url(r'^obcy/verify/(?P<pk>.+)$', 'obcy.views.verify_joke'),
-    url(r'^obcy/unverify/(?P<pk>.+)$', 'obcy.views.unverify_joke'),
     # autorski
     url(r'^autorskie/$', 'autorski.views.all_jokes'),
     url(r'^autorskie/(?P<jokeslug>.+)/$', 'autorski.views.one_joke'),

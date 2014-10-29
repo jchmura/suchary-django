@@ -1,12 +1,12 @@
 {% if moderator %}
     <small>&nbsp;&nbsp;
         {% if not verified %}
-            <span class="glyphicon glyphicon-ok mod-action" title="Verify" onclick="verify_joke('obcy', {{ joke_id }})">&nbsp;</span>
+            <span class="glyphicon glyphicon-exclamation-sign mod-action" title="Verify" onclick="verify_joke({{ joke_id }})">&nbsp;</span>
         {% else %}
-            <span class="glyphicon glyphicon-remove mod-action" title="Unverify" onclick="unverify_joke('obcy', {{ joke_id }})">&nbsp;</span>
+            <span class="glyphicon glyphicon-ok" title="Verified">&nbsp;</span>
         {% endif %}
-        <span class="glyphicon glyphicon-trash mod-action" title="Delete" onclick="delete_joke('obcy', {{ joke_id }})">&nbsp;</span>
-        <span class="glyphicon glyphicon-pencil mod-action" title="Edit" onclick="edit_joke('obcy', {{ joke_id }})">&nbsp;</span>
-        <span class="glyphicon glyphicon-tint mod-action" title="Auto edit" onclick="clean_joke('obcy', {{ joke_id }})">&nbsp;</span>
+        <span class="glyphicon glyphicon-trash mod-action" title="Delete" onclick="delete_joke({{ joke_id }})">&nbsp;</span>
+        <span class="glyphicon glyphicon-pencil mod-action" title="Edit" onclick="edit_joke({{ joke_id }})">&nbsp;</span>
+        <span class="glyphicon glyphicon-tint mod-action" title="Auto edit" onclick="clean_joke({{ joke_id }})">&nbsp;</span>
     </small>
 {% endif %}

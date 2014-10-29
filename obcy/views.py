@@ -88,19 +88,6 @@ def verify_joke(request, pk):
         return HttpResponse('User not authorised to verify joke')
 
 
-@require_POST
-def unverify_joke(request, pk):
-    user = request.user.groups.filter(name='Moderator')
-    if user:
-        joke = Joke.objects.get(pk=pk)
-        joke.verified = None
-        joke.save()
-        logger.info('Joke %s unverified.', joke.key)
-        return HttpResponse(status=200)
-    else:
-        return HttpResponse('User not authorised to unverify joke')
-
-
 def json_response(data=None, status_code=200):
     if data is None:
         data = ''
