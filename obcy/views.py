@@ -32,6 +32,11 @@ def all_random(request):
     return render(request, 'obce_all.html', context, context_instance=RequestContext(request))
 
 
+def unverified(request):
+    context = prepare_view.unverified(request)
+    return render(request, 'obce_all.html', context, context_instance=RequestContext(request))
+
+
 @require_POST
 def edit_joke(request, pk):
     body = request.POST.get('body', '')
