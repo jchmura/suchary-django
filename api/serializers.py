@@ -13,7 +13,7 @@ class DateTimeTzAwareField(serializers.DateTimeField):
 
 
 class ObcyJokeSerializer(serializers.ModelSerializer):
-    added = DateTimeTzAwareField(source='added', format='%Y-%m-%dT%X%z')
+    added = DateTimeTzAwareField(format='%Y-%m-%dT%X%z')
 
     class Meta:
         model = Joke
