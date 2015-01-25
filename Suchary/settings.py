@@ -73,13 +73,11 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'south',
     'rest_framework',
     'django_extensions',
     'django_filters',
 
     'obcy',
-    'autorski',
     'api',
     'accounts'
 )
