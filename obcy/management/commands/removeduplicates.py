@@ -13,7 +13,7 @@ class Command(BaseCommand):
         else:
             count = self.count_number(set2, set1)
 
-        if count / min(len1, len2) > 0.8:
+        if count / min(len1, len2) > 0.5:
             return True
         else:
             return False
