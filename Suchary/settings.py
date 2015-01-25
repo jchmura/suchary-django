@@ -135,7 +135,7 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',),
 }
 
-LOG_DIR = '/srv/http/www/suchary/logs/django'
+LOG_DIR = '/webapps/suchary/logs/django'
 
 LOGGING = {
     'version': 1,
