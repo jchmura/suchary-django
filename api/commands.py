@@ -21,8 +21,16 @@ def get_reg_ids(alias):
     return reg_ids
 
 
-def send(data, collapse_key=None, to=None):
-    reg_ids = get_reg_ids(to)
+def send(data, collapse_key=None, to=None, reg_ids=None):
+    if reg_ids is None:
+        reg_ids = get_reg_ids(to)
+
+    if len(reg_ids) > 1000:
+        logger.info('reg ids too long ({}). '.format(len(reg_ids)))
+        send(data, collapse_key, to, reg_ids[:1000])
+        send(data, collapse_key, to, reg_ids[1000:])
+        return
+
     payload = {'registration_ids': reg_ids, 'data': data}
     if collapse_key is not None:
         payload.update({'collapse_key': collapse_key})
