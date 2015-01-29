@@ -73,13 +73,11 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'south',
     'rest_framework',
     'django_extensions',
     'django_filters',
 
     'obcy',
-    'autorski',
     'api',
     'accounts'
 )
@@ -106,7 +104,7 @@ WSGI_APPLICATION = 'Suchary.wsgi.application'
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
-LANGUAGE_CODE = 'pl-pl'
+LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'Europe/Warsaw'
 
@@ -123,7 +121,8 @@ MEDIA_URL = '/media/'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static/'),)
 STATIC_URL = '/static/'
 
 REST_FRAMEWORK = {
@@ -135,7 +134,7 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',),
 }
 
-LOG_DIR = '/srv/http/www/suchary/logs/django'
+LOG_DIR = os.path.join(BASE_DIR, 'logs/')
 
 LOGGING = {
     'version': 1,
