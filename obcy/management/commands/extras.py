@@ -62,7 +62,6 @@ def is_duplicate(joke, jokes):
         if compare(set1, set2):
             if not joke.duplicate:
                 joke.duplicate = second_joke
-                joke.save()
             return True
     else:
         return False
