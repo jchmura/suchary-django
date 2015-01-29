@@ -1,11 +1,13 @@
 import json
 import logging
 
+from django.db import transaction
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.template import RequestContext
 from django.utils import timezone
 from django.views.decorators.http import require_POST, require_GET
+import reversion
 
 from obcy.extras import prepare_view
 from obcy.models import Joke
@@ -45,11 +47,14 @@ def edit_joke(request, pk):
 
     user = request.user.groups.filter(name='Moderator')
     if user:
-        joke = Joke.objects.get(pk=pk)
-        joke.body = body
-        joke.save()
-        logger.info('Joke %s edited.', joke.key)
-        api_edit_joke(joke.key)
+        with transaction.atomic(), reversion.create_revision():
+            joke = Joke.objects.get(pk=pk)
+            joke.body = body
+            joke.save()
+            reversion.set_user(user)
+            reversion.set_comment('Body updated.')
+            logger.info('Joke %s edited.', joke.key)
+            api_edit_joke(joke.key)
         return HttpResponse(status=200)
     else:
         return HttpResponse('User not authorised to edit joke')
@@ -84,10 +89,13 @@ def clean_joke(request):
 def verify_joke(request, pk):
     user = request.user.groups.filter(name='Moderator')
     if user:
-        joke = Joke.objects.get(pk=pk)
-        joke.verified = timezone.localtime(timezone.now())
-        joke.save()
-        logger.info('Joke %s verified.', joke.key)
+        with transaction.atomic(), reversion.create_revision():
+            joke = Joke.objects.get(pk=pk)
+            joke.verified = timezone.localtime(timezone.now())
+            joke.save()
+            reversion.set_user(user)
+            reversion.set_comment('Joke verified.')
+            logger.info('Joke %s verified.', joke.key)
         return HttpResponse(status=200)
     else:
         return HttpResponse('User not authorised to verify joke')
