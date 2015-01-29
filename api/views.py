@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 class ObcyJokeFilter(django_filters.FilterSet):
     before = django_filters.DateTimeFilter(name='added', lookup_type='lt')
     after = django_filters.DateTimeFilter(name='added', lookup_type='gt')
-    min_votes = django_filters.NumberFilter(lookup_type='gte')
+    min_votes = django_filters.NumberFilter(name='votes', lookup_type='gte')
 
     class Meta:
         model = Joke
