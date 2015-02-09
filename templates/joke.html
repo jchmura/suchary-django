@@ -1,0 +1,31 @@
+{% load obcy_extras %}
+{% load obcy_admin %}
+<div id="joke-{{ joke.pk }}" class="panel panel-default">
+    <div class="panel-heading">
+        <span class="badge"><b>{{ joke.votes }}</b></span>&nbsp;
+        <small>
+            {% load i18n %}
+            {% language 'pl' %}
+            <a href="/obcy/{{ joke.key }}" class="hash-link">{{ joke.added }}</a>
+            {% endlanguage %}
+            {% if last_seen and last_seen|lt:joke.added %}
+                &nbsp;<span class="label label-info">Nowy</span>
+            {% endif %}
+        </small>
+
+
+        <a href="{{ joke.url }}">
+            <span class="pull-right">
+                <img class="img-joke-source" title="Źródło" src="{{ MEDIA_URL }}images/{{ joke.site }}_small.{{ site_image_extension|lookup:joke.site }}"
+                        {% if moderator %} style="height: 50%" {% endif %}>
+            </span>
+        </a>
+
+        {% mod_joke joke.pk joke.verified %}
+
+    </div>
+
+    <div class="panel-body">
+        <p>{{ joke.body|linebreaksbr }}</p>
+    </div>
+</div>

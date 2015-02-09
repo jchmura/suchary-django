@@ -118,8 +118,7 @@ def all_sites(request, pages=True):
 def one_joke(request, jokeslug):
     joke = Joke.objects.get(slug=jokeslug)
     site_url = SITE_URL[joke.site]
-    site_image_extension = SITE_IMAGE_EXTENSION[joke.site]
-    context = {'joke': joke, 'site_url': site_url, 'site_image_extension': site_image_extension}
+    context = {'joke': joke, 'site_url': site_url, 'site_image_extension': SITE_IMAGE_EXTENSION}
     __add_user(request, context)
     return context
 

@@ -7,26 +7,10 @@
 
 {% block zajumane %} class="active"{% endblock %}
 
-{% load obcy_extras %}
+{% load obcy_joke %}
 {% block jokes %}
     <!-- Joke -->
-    <div id="joke-{{ joke.pk }}" class="panel panel-default">
-        <div class="panel-heading">
-            <span class="badge"><b>{{ joke.votes }}</b></span>&nbsp;
-            {% load i18n %}
-            {% language 'pl' %}
-                <small><a href="/obcy/{{ joke.key }}" class="hash-link">{{ joke.added }}</a></small>
-            {% endlanguage %}
-            <a href="{{ joke.url }}">
-                <img class="pull-right img-responsive img-joke-source" alt="Źródło"
-                     src="{{ MEDIA_URL }}images/{{ joke.site }}_small.{{ site_image_extension }}">
-            </a>
-        </div>
-
-        <div class="panel-body">
-            <p>{{ joke.body|linebreaksbr }}</p>
-        </div>
-    </div>
+    {% display_joke joke %}
 {% endblock %}
 
 {% block javascript %}
@@ -42,4 +26,6 @@
             scale_images();
         });
     </script>
+    {% load obcy_admin %}
+    {% mod_joke_js %}
 {% endblock %}
