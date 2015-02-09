@@ -1,8 +1,7 @@
-import json
 import logging
 
 from django.db import transaction
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.template import RequestContext
 from django.utils import timezone
@@ -82,7 +81,7 @@ def clean_joke(request):
     cleaned = clean_content(body)
     if cleaned != body:
         logger.debug('Cleaned body:\n%s\n------\n%s', body, cleaned)
-    return json_response({'cleaned': cleaned})
+    return JsonResponse({'cleaned': cleaned})
 
 
 @require_POST
@@ -101,7 +100,17 @@ def verify_joke(request, pk):
         return HttpResponse('User not authorised to verify joke')
 
 
-def json_response(data=None, status_code=200):
-    if data is None:
-        data = ''
-    return HttpResponse(json.dumps(data), content_type='application/json', status=status_code)
+@require_GET
+def get_revisions(request, pk):
+    user = request.user.groups.filter(name='Moderator')
+    if user:
+        joke = Joke.objects.get(pk=pk)
+        version_list = reversion.get_unique_for_object(joke)
+        versions = []
+        for version in version_list:
+            date = version.revision.date_created
+            body = version.field_dict['body']
+            versions.append({'date': date, 'body': body})
+        return JsonResponse(versions, safe=False)
+    else:
+        return HttpResponse('User not authorised to get revisions')
