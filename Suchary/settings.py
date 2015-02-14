@@ -76,6 +76,7 @@ INSTALLED_APPS = (
     'rest_framework',
     'django_extensions',
     'django_filters',
+    'reversion',
 
     'obcy',
     'api',
@@ -89,6 +90,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'reversion.middleware.RevisionMiddleware',
 )
 
 ROOT_URLCONF = 'Suchary.urls'

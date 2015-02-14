@@ -1,3 +1,5 @@
+import obcy.admin
+
 import json
 import logging
 import os
@@ -5,8 +7,10 @@ from time import sleep
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
+from django.db import transaction
 from django.utils import timezone
 import pytz
+import reversion
 
 from api.commands import new_jokes
 from obcy.management.commands.extras import input_json, is_duplicate, HTMLStripper, clean_content
@@ -41,10 +45,7 @@ class Command(BaseCommand):
 
         body = clean_content(body)
 
-        j = Joke(site=self.site, key=key, slug=key, url=url, votes=votes, date=date, body=body, added=added)
-        j.save()
-
-        return j
+        return Joke(site=self.site, key=key, slug=key, url=url, votes=votes, date=date, body=body, added=added)
 
     def handle(self, *args, **options):
         if len(args) != 1:
@@ -63,6 +64,9 @@ class Command(BaseCommand):
                 logger.info('Created new joke: %s from site %s', new_joke.key, new_joke.site)
                 if not is_duplicate(new_joke, jokes):
                     self.new_count += 1
+                with transaction.atomic(), reversion.create_revision():
+                    new_joke.save()
+                    reversion.set_comment('Joke creation.')
             else:
                 old_joke = Joke.objects.get(key=joke['id'])
                 new_votes = joke['votes']

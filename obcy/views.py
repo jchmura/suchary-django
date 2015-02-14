@@ -1,11 +1,12 @@
-import json
 import logging
 
-from django.http import HttpResponse
+from django.db import transaction
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.template import RequestContext
 from django.utils import timezone
 from django.views.decorators.http import require_POST, require_GET
+import reversion
 
 from obcy.extras import prepare_view
 from obcy.models import Joke
@@ -45,11 +46,14 @@ def edit_joke(request, pk):
 
     user = request.user.groups.filter(name='Moderator')
     if user:
-        joke = Joke.objects.get(pk=pk)
-        joke.body = body
-        joke.save()
-        logger.info('Joke %s edited.', joke.key)
-        api_edit_joke(joke.key)
+        with transaction.atomic(), reversion.create_revision():
+            joke = Joke.objects.get(pk=pk)
+            joke.body = body
+            joke.save()
+            reversion.set_user(user)
+            reversion.set_comment('Body updated.')
+            logger.info('Joke %s edited.', joke.key)
+            api_edit_joke(joke.key)
         return HttpResponse(status=200)
     else:
         return HttpResponse('User not authorised to edit joke')
@@ -77,23 +81,36 @@ def clean_joke(request):
     cleaned = clean_content(body)
     if cleaned != body:
         logger.debug('Cleaned body:\n%s\n------\n%s', body, cleaned)
-    return json_response({'cleaned': cleaned})
+    return JsonResponse({'cleaned': cleaned})
 
 
 @require_POST
 def verify_joke(request, pk):
     user = request.user.groups.filter(name='Moderator')
     if user:
-        joke = Joke.objects.get(pk=pk)
-        joke.verified = timezone.localtime(timezone.now())
-        joke.save()
-        logger.info('Joke %s verified.', joke.key)
+        with transaction.atomic(), reversion.create_revision():
+            joke = Joke.objects.get(pk=pk)
+            joke.verified = timezone.localtime(timezone.now())
+            joke.save()
+            reversion.set_user(user)
+            reversion.set_comment('Joke verified.')
+            logger.info('Joke %s verified.', joke.key)
         return HttpResponse(status=200)
     else:
         return HttpResponse('User not authorised to verify joke')
 
 
-def json_response(data=None, status_code=200):
-    if data is None:
-        data = ''
-    return HttpResponse(json.dumps(data), content_type='application/json', status=status_code)
+@require_GET
+def get_revisions(request, pk):
+    user = request.user.groups.filter(name='Moderator')
+    if user:
+        joke = Joke.objects.get(pk=pk)
+        version_list = reversion.get_unique_for_object(joke)
+        versions = []
+        for version in version_list:
+            date = version.revision.date_created
+            body = version.field_dict['body']
+            versions.append({'date': date, 'body': body})
+        return JsonResponse(versions, safe=False)
+    else:
+        return HttpResponse('User not authorised to get revisions')

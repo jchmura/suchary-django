@@ -43,12 +43,14 @@ function edit_joke_off(pk) {
     var textarea = $("#joke-" + pk + " > .panel-body > textarea");
     textarea.replaceWith("<p>" + old_text + "</p>");
     $(".btn-edit-joke").remove();
+    $('.versions-selector').remove();
 }
 
 function edit_joke(pk) {
     var panel = $("#joke-" + pk + " > div.panel-body");
     if (panel.has("p").length) {
         edit_joke_on(pk);
+        get_revisions(pk);
     }
     else {
         edit_joke_off(pk);
@@ -124,4 +126,39 @@ function verified_joke(pk) {
         .removeClass('glyphicon-exclamation-sign')
         .addClass('glyphicon-ok')
         .attr('title', 'Unverify');
+}
+
+function showVersions(pk, versions) {
+    var body = $('#joke-' + pk + ' > div.panel-body');
+    var textarea = body.children('textarea');
+    $('<select class="selectpicker versions-selector" data-style="btn-xs pull-left"/>').insertAfter(textarea);
+    var select = $('.selectpicker');
+
+    versions.forEach(function(version) {
+        $('<option/>', {
+            value: version.body,
+            text: version.date.toLocaleDateString() + ' ' + version.date.toLocaleTimeString()
+        }).appendTo(select);
+    });
+
+    select.selectpicker();
+    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
+        select.selectpicker('mobile');
+    }
+
+
+    select.change(function() {
+        var textarea = $("#joke-" + pk + " > .panel-body > textarea");
+        textarea.val(this.value);
+        textarea.trigger('change');
+    });
+}
+function get_revisions(pk) {
+    $.getJSON('/obcy/revisions/' + pk, function(data) {
+        var versions = [];
+        data.forEach(function(version) {
+            versions.push({date: new Date(version.date), body: version.body})
+        });
+        showVersions(pk, versions);
+    });
 }
