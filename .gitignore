@@ -50,6 +50,7 @@ static/admin
 static/dajax
 static/dajaxice
 static/rest_framework
+static/django_extensions
 */migrations/
 
 # Sphinx documentation
