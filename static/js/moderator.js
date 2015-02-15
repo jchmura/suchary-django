@@ -80,7 +80,9 @@ function send_edit(pk) {
 }
 
 function edited_joke(pk) {
-    old_text = $("#joke-" + pk + " > .panel-body > textarea").val().replace(/\n/g, "<br>");
+    var text = $("#joke-" + pk + " > .panel-body > textarea").val();
+    var escaped = $('<div/>').text(text).html();
+    old_text = escaped.replace(/\n/g, "<br>");
     edit_joke_off(pk)
 }
 
