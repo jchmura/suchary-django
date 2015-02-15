@@ -21,9 +21,11 @@
 
     <!-- Custom styles -->
     <link href="{% static "css/base.css" %}" rel="stylesheet">
+    {% if moderator %}<link href="{% static "css/admin.css" %}" rel="stylesheet">{% endif %}
     {% block head %}{% endblock %}
 </head>
 <body>
+{% include "admin/delete_modal.html" %}
 <div class="wrap">
     <!-- Navigation -->
     <div class="navbar navbar-default navbar-static-top" role="navigation">

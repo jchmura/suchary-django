@@ -24,6 +24,7 @@ urlpatterns = patterns(
         RedirectView.as_view(url='http://suchary.jakubchmura.pl/obcy/%(key)s', permanent=True)),
     url(r'^obcy/edit/(?P<pk>.+)$', 'obcy.views.edit_joke'),
     url(r'^obcy/delete/(?P<pk>.+)$', 'obcy.views.delete_joke'),
+    url(r'^obcy/duplicate/(?P<pk>.+)/(?P<key>.+)$', 'obcy.views.duplicate_joke'),
     url(r'^obcy/clean$', 'obcy.views.clean_joke'),
     url(r'^obcy/verify/(?P<pk>.+)$', 'obcy.views.verify_joke'),
     url(r'^obcy/revisions/(?P<pk>.+)$', 'obcy.views.get_revisions'),

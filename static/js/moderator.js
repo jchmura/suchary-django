@@ -1,24 +1,79 @@
+$.fn.multiline = function (text) {
+    this.text(text);
+    this.html(this.html().replace(/\n/g, '<br/>'));
+    return this;
+};
+
+$('#deleteModal').on('shown.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var pk = button.data('pk');
+    var paragraph = $("#joke-" + pk + " > .panel-body > p");
+    var jokeBody = paragraph.html();
+    var modalJokeBody = $('#modal-joke-body');
+    modalJokeBody.html(jokeBody);
+    var duplicateBody = $('#modal-duplicate-joke-body');
+    duplicateBody.css('display', 'none');
+    $('#confirm-joke-delete').data('pk', pk);
+    $('#confirm-joke-duplicate').data('pk', pk);
+});
+
 function delete_joke(pk) {
-    var body = $("#joke-" + pk + " > .panel-body > p").text();
-    var message = "Detele joke?\n\n" + body;
-    if (confirm(message)) {
-        $.ajax({
-            url: '/obcy/delete/' + pk,
-            type: 'POST',
-            success: function() {
-                deleted_joke(pk)
-            },
-            error: function(xhr, status, errorThrown) {
-                console.log("Error: " + errorThrown);
-                console.log("Status: " + status);
-            }
-        });
-    }
+    $.ajax({
+        url: '/obcy/delete/' + pk,
+        type: 'POST',
+        success: function () {
+            deleted_joke(pk)
+        },
+        error: function (xhr, status, errorThrown) {
+            console.log("Error: " + errorThrown);
+            console.log("Status: " + status);
+        }
+    });
 
 }
 
 function deleted_joke(pk) {
     $("#joke-" + pk).hide();
+    $('#deleteModal').modal('hide');
+}
+
+$(document).ready(function () {
+    $('#duplicate-form').submit(function (event) {
+        get_duplicate();
+        event.preventDefault();
+    });
+    $('#confirm-joke-delete').click(function () {
+        var pk = $(this).data('pk');
+        delete_joke(pk);
+    });
+    $('#confirm-joke-duplicate').click(function () {
+        var pk = $(this).data('pk');
+        set_duplicate(pk);
+    });
+});
+
+function get_duplicate() {
+    var key = $('#duplicateKey').val();
+    $.getJSON('/api/obcy/' + key, function (data) {
+        var duplicateBody = $('#modal-duplicate-joke-body');
+        duplicateBody.multiline(data.body);
+        duplicateBody.css('display', 'inherit');
+    });
+}
+
+function set_duplicate(pk) {
+    var key = $('#duplicateKey').val();
+    $.ajax({
+        url: '/obcy/duplicate/' + pk + '/' + key,
+        type: 'POST',
+        success: function () {
+            deleted_joke(pk)
+        },
+        error: function (xhr, status, errorThrown) {
+            console.log("Error: " + errorThrown);
+            console.log("Status: " + status);
+        }
+    });
 }
 
 var old_text;

@@ -56,7 +56,7 @@ def edit_joke(request, pk):
             api_edit_joke(joke.key)
         return HttpResponse(status=200)
     else:
-        return HttpResponse('User not authorised to edit joke')
+        return HttpResponse('User not authorised to edit joke', status=401)
 
 
 @require_POST
@@ -70,7 +70,22 @@ def delete_joke(request, pk):
         api_remove_joke(joke.key)
         return HttpResponse(status=200)
     else:
-        return HttpResponse('User not authorised to remove joke')
+        return HttpResponse('User not authorised to remove joke', status=401)
+
+
+@require_POST
+def duplicate_joke(request, pk, key):
+    user = request.user.groups.filter(name='Moderator')
+    if user:
+        joke = Joke.objects.get(pk=pk)
+        original = Joke.objects.get(key=key)
+        joke.duplicate = original
+        joke.save()
+        logger.info('Joke %s marked as duplicate of %s.', joke.key, original.key)
+        api_remove_joke(joke.key)
+        return HttpResponse(status=200)
+    else:
+        return HttpResponse('User not authorised to mark joke as duplicated', status=401)
 
 
 @require_GET
@@ -97,7 +112,7 @@ def verify_joke(request, pk):
             logger.info('Joke %s verified.', joke.key)
         return HttpResponse(status=200)
     else:
-        return HttpResponse('User not authorised to verify joke')
+        return HttpResponse('User not authorised to verify joke', status=401)
 
 
 @require_GET
@@ -113,4 +128,4 @@ def get_revisions(request, pk):
             versions.append({'date': date, 'body': body})
         return JsonResponse(versions, safe=False)
     else:
-        return HttpResponse('User not authorised to get revisions')
+        return HttpResponse('User not authorised to get revisions', status=401)

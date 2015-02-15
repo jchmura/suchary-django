@@ -5,7 +5,7 @@
         {% else %}
             <span class="glyphicon glyphicon-ok" title="Verified">&nbsp;</span>
         {% endif %}
-        <span class="glyphicon glyphicon-trash mod-action" title="Delete" onclick="delete_joke({{ joke_id }})">&nbsp;</span>
+        <span class="glyphicon glyphicon-trash mod-action" title="Delete" data-toggle="modal" data-target="#deleteModal" data-pk="{{ joke_id }}">&nbsp;</span>
         <span class="glyphicon glyphicon-pencil mod-action" title="Edit" onclick="edit_joke({{ joke_id }})">&nbsp;</span>
         <span class="glyphicon glyphicon-tint mod-action" title="Auto edit" onclick="clean_joke({{ joke_id }})">&nbsp;</span>
     </small>
