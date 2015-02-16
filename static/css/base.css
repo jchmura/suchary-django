@@ -48,3 +48,7 @@ html, body {
 #load-new-random {
     margin-bottom: 20px;
 }
+
+.pagination > li > a {
+    cursor: pointer;
+}
