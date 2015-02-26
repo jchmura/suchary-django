@@ -64,7 +64,7 @@ def delete_joke(request, pk):
     user = request.user.groups.filter(name='Moderator')
     if user:
         joke = Joke.objects.get(pk=pk)
-        joke.hidden = True
+        joke.hidden = timezone.now()
         joke.save()
         logger.info('Joke %s removed.', joke.key)
         api_remove_joke(joke.key)
