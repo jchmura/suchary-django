@@ -88,9 +88,11 @@ def __order_by(request):
     return sort
 
 
-def all_sites(request, pages=True):
+def all_sites(request, pages=True, show_hidden=False):
     context = {}
-    jokes = Joke.objects.filter(duplicate=None).filter(hidden=False)
+    jokes = Joke.objects.filter(duplicate=None)
+    if not show_hidden:
+        jokes = jokes.filter(hidden=None)
     search = request.GET.get('q', '')
     if search.strip() != '':
         items = search.split()
@@ -124,7 +126,7 @@ def one_joke(request, jokeslug):
 
 
 def random(request, pages=True):
-    jokes = Joke.objects.filter(duplicate=None).filter(hidden=False).order_by('?')
+    jokes = Joke.objects.filter(duplicate=None).filter(hidden=None).order_by('?')
     if pages:
         jokes = __add_pages(request, jokes)
     context = {'jokes': jokes, 'site': 'all', 'site_image_extension': SITE_IMAGE_EXTENSION, 'random': True}
@@ -133,7 +135,7 @@ def random(request, pages=True):
 
 
 def unverified(request):
-    jokes = Joke.objects.filter(duplicate=None).filter(hidden=False).filter(verified=None).order_by(__order_by(request))
+    jokes = Joke.objects.filter(duplicate=None).filter(hidden=None).filter(verified=None).order_by(__order_by(request))
     jokes = __add_pages(request, jokes)
     context = {'jokes': jokes, 'site': 'all', 'site_image_extension': SITE_IMAGE_EXTENSION}
     __add_user(request, context)

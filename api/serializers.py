@@ -14,7 +14,9 @@ class DateTimeTzAwareField(serializers.DateTimeField):
 
 class ObcyJokeSerializer(serializers.ModelSerializer):
     added = DateTimeTzAwareField(format='%Y-%m-%dT%X%z')
+    changed = DateTimeTzAwareField(format='%Y-%m-%dT%X%z')
+    hidden = DateTimeTzAwareField(format='%Y-%m-%dT%X%z')
 
     class Meta:
         model = Joke
-        fields = ('key', 'votes', 'added', 'url', 'body', 'site')
+        fields = ('key', 'votes', 'added', 'url', 'body', 'site', 'changed', 'hidden')
