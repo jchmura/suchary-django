@@ -76,6 +76,7 @@ INSTALLED_APPS = (
     'rest_framework',
     'django_extensions',
     'django_filters',
+    'reversion',
 
     'obcy',
     'api',
@@ -89,6 +90,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'reversion.middleware.RevisionMiddleware',
 )
 
 ROOT_URLCONF = 'Suchary.urls'
@@ -121,7 +123,8 @@ MEDIA_URL = '/media/'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static/'),)
 STATIC_URL = '/static/'
 
 REST_FRAMEWORK = {
@@ -133,7 +136,7 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',),
 }
 
-LOG_DIR = '/webapps/suchary/logs/django'
+LOG_DIR = os.path.join(BASE_DIR, 'logs/')
 
 LOGGING = {
     'version': 1,

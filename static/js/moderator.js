@@ -1,24 +1,79 @@
+$.fn.multiline = function (text) {
+    this.text(text);
+    this.html(this.html().replace(/\n/g, '<br/>'));
+    return this;
+};
+
+$('#deleteModal').on('shown.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var pk = button.data('pk');
+    var paragraph = $("#joke-" + pk + " > .panel-body > p");
+    var jokeBody = paragraph.html();
+    var modalJokeBody = $('#modal-joke-body');
+    modalJokeBody.html(jokeBody);
+    var duplicateBody = $('#modal-duplicate-joke-body');
+    duplicateBody.css('display', 'none');
+    $('#confirm-joke-delete').data('pk', pk);
+    $('#confirm-joke-duplicate').data('pk', pk);
+});
+
 function delete_joke(pk) {
-    var body = $("#joke-" + pk + " > .panel-body > p").text();
-    var message = "Detele joke?\n\n" + body;
-    if (confirm(message)) {
-        $.ajax({
-            url: '/obcy/delete/' + pk,
-            type: 'POST',
-            success: function() {
-                deleted_joke(pk)
-            },
-            error: function(xhr, status, errorThrown) {
-                console.log("Error: " + errorThrown);
-                console.log("Status: " + status);
-            }
-        });
-    }
+    $.ajax({
+        url: '/obcy/delete/' + pk,
+        type: 'POST',
+        success: function () {
+            deleted_joke(pk)
+        },
+        error: function (xhr, status, errorThrown) {
+            console.log("Error: " + errorThrown);
+            console.log("Status: " + status);
+        }
+    });
 
 }
 
 function deleted_joke(pk) {
     $("#joke-" + pk).hide();
+    $('#deleteModal').modal('hide');
+}
+
+$(document).ready(function () {
+    $('#duplicate-form').submit(function (event) {
+        get_duplicate();
+        event.preventDefault();
+    });
+    $('#confirm-joke-delete').click(function () {
+        var pk = $(this).data('pk');
+        delete_joke(pk);
+    });
+    $('#confirm-joke-duplicate').click(function () {
+        var pk = $(this).data('pk');
+        set_duplicate(pk);
+    });
+});
+
+function get_duplicate() {
+    var key = $('#duplicateKey').val();
+    $.getJSON('/api/obcy/' + key, function (data) {
+        var duplicateBody = $('#modal-duplicate-joke-body');
+        duplicateBody.multiline(data.body);
+        duplicateBody.css('display', 'inherit');
+    });
+}
+
+function set_duplicate(pk) {
+    var key = $('#duplicateKey').val();
+    $.ajax({
+        url: '/obcy/duplicate/' + pk + '/' + key,
+        type: 'POST',
+        success: function () {
+            deleted_joke(pk)
+        },
+        error: function (xhr, status, errorThrown) {
+            console.log("Error: " + errorThrown);
+            console.log("Status: " + status);
+        }
+    });
 }
 
 var old_text;
@@ -43,12 +98,14 @@ function edit_joke_off(pk) {
     var textarea = $("#joke-" + pk + " > .panel-body > textarea");
     textarea.replaceWith("<p>" + old_text + "</p>");
     $(".btn-edit-joke").remove();
+    $('.versions-selector').remove();
 }
 
 function edit_joke(pk) {
     var panel = $("#joke-" + pk + " > div.panel-body");
     if (panel.has("p").length) {
         edit_joke_on(pk);
+        get_revisions(pk);
     }
     else {
         edit_joke_off(pk);
@@ -78,7 +135,9 @@ function send_edit(pk) {
 }
 
 function edited_joke(pk) {
-    old_text = $("#joke-" + pk + " > .panel-body > textarea").val().replace(/\n/g, "<br>");
+    var text = $("#joke-" + pk + " > .panel-body > textarea").val();
+    var escaped = $('<div/>').text(text).html();
+    old_text = escaped.replace(/\n/g, "<br>");
     edit_joke_off(pk)
 }
 
@@ -124,4 +183,39 @@ function verified_joke(pk) {
         .removeClass('glyphicon-exclamation-sign')
         .addClass('glyphicon-ok')
         .attr('title', 'Unverify');
+}
+
+function showVersions(pk, versions) {
+    var body = $('#joke-' + pk + ' > div.panel-body');
+    var textarea = body.children('textarea');
+    $('<select class="selectpicker versions-selector" data-style="btn-xs pull-left"/>').insertAfter(textarea);
+    var select = $('.selectpicker');
+
+    versions.forEach(function(version) {
+        $('<option/>', {
+            value: version.body,
+            text: version.date.toLocaleDateString() + ' ' + version.date.toLocaleTimeString()
+        }).appendTo(select);
+    });
+
+    select.selectpicker();
+    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
+        select.selectpicker('mobile');
+    }
+
+
+    select.change(function() {
+        var textarea = $("#joke-" + pk + " > .panel-body > textarea");
+        textarea.val(this.value);
+        textarea.trigger('change');
+    });
+}
+function get_revisions(pk) {
+    $.getJSON('/obcy/revisions/' + pk, function(data) {
+        var versions = [];
+        data.forEach(function(version) {
+            versions.push({date: new Date(version.date), body: version.body})
+        });
+        showVersions(pk, versions);
+    });
 }

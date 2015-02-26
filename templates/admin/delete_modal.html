@@ -1,0 +1,38 @@
+{% if moderator %}
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="deleteModalLabel">Delete joke?</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="modal-joke-body"></div>
+                    <div id="modal-delete-footer" class="pull-right">
+                        <button type="button" class="btn btn-primary btn-sm" id="confirm-joke-delete">Delete</button>
+                    </div><br>
+
+                    <hr>
+
+                    <h5>Mark as duplicate of an other joke</h5>
+                    <form class="form-inline" id="duplicate-form">
+                        <div class="form-group">
+                            <label class="sr-only" for="duplicateKey">Duplicate key</label>
+                            <input type="text" class="form-control" id="duplicateKey" placeholder="Joke key">
+                        </div>
+                        <button type="submit" class="btn btn-default btn-sm">Display</button>
+                    </form>
+                    <div id="modal-duplicate-joke-body" class="well well-sm"></div>
+                    <div id="modal-delete-footer" class="pull-right">
+                        <button type="button" class="btn btn-primary btn-sm" id="confirm-joke-duplicate">Set as duplicate</button>
+                    </div><br>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}

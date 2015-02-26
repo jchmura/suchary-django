@@ -1,37 +1,34 @@
 {% if jokes.paginator.num_pages > 1 %}
+    {% load obcy_extras %}
     <!-- Pagination -->
     <div class="text-center">
-        <ul class="pagination pagination-lg">
-            {% if jokes.has_previous %}
-                <li><a onclick="page({{ jokes.previous_page_number }})" href="javascript:void(0);">
+        <ul class="pagination">
+            {% if jokes.number > 3 %}
+                <li><a onclick="page({{ 1 }})">
                     &laquo;</a></li>
-            {% else %}
-                <li class="disabled"><span>&laquo;</span></li>
             {% endif %}
             {% if jokes.number > 2 %}
-                <li><a onclick="page({{ jokes.previous_page_number|add:'-1' }})" href="javascript:void(0);">
+                <li><a onclick="page({{ jokes.previous_page_number|add:'-1' }})">
                     {{ jokes.previous_page_number|add:"-1" }}</a></li>
             {% endif %}
             {% if jokes.has_previous %}
-                <li><a onclick="page({{ jokes.previous_page_number }})" href="javascript:void(0);">
+                <li><a onclick="page({{ jokes.previous_page_number }})">
                     {{ jokes.previous_page_number }}</a></li>
             {% endif %}
 
             <li class="active"><span>{{ jokes.number }}</span></li>
 
             {% if jokes.has_next %}
-                <li><a onclick="page({{ jokes.next_page_number }})" href="javascript:void(0);">
+                <li><a onclick="page({{ jokes.next_page_number }})">
                     {{ jokes.next_page_number }}</a></li>
             {% endif %}
-            {% if jokes.number < jokes.paginator.num_pages|add:"-2" %}
-                <li><a onclick="page({{ jokes.next_page_number|add:'1' }})" href="javascript:void(0);">
+            {% if jokes.paginator.num_pages|sub:jokes.number > 1 %}
+                <li><a onclick="page({{ jokes.next_page_number|add:'1' }})">
                     {{ jokes.next_page_number|add:'1' }}</a></li>
             {% endif %}
-            {% if jokes.has_next %}
-                <li><a onclick="page({{ jokes.next_page_number }})" href="javascript:void(0);">
+            {% if jokes.paginator.num_pages|sub:jokes.number > 2 %}
+                <li><a onclick="page({{ jokes.paginator.num_pages }})">
                     &raquo;</a></li>
-            {% else %}
-                <li class="disabled"><span>&raquo;</span></li>
             {% endif %}
         </ul>
     </div>

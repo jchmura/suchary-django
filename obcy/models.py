@@ -11,8 +11,9 @@ class Joke(models.Model):
     body = models.TextField()
     duplicate = models.ForeignKey('self', blank=True, null=True)
     added = models.DateTimeField()
-    hidden = models.BooleanField(default=False)
+    hidden = models.DateTimeField(blank=True, null=True, default=None)
     verified = models.DateTimeField(blank=True, null=True, default=None)
+    changed = models.DateTimeField(auto_now=True, auto_now_add=True)
 
     def __str__(self):
         return str(self.key)

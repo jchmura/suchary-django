@@ -1,4 +1,5 @@
 from datetime import datetime
+import html
 from html.parser import HTMLParser
 import re
 
@@ -62,7 +63,6 @@ def is_duplicate(joke, jokes):
         if compare(set1, set2):
             if not joke.duplicate:
                 joke.duplicate = second_joke
-                joke.save()
             return True
     else:
         return False
@@ -71,13 +71,16 @@ def is_duplicate(joke, jokes):
 class HTMLStripper(HTMLParser):
     def __init__(self):
         super(HTMLStripper, self).__init__(convert_charrefs=False)
-        self.text = ""
+        self.text = ''
 
     def handle_data(self, data):
         self.text += data
 
+    def handle_entityref(self, name):
+        self.text += '&{};'.format(name)
+
     def get_text(self):
-        return self.text
+        return html.unescape(self.text)
 
 
 def clean_content(body):

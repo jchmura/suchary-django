@@ -10,6 +10,7 @@
 
     <!-- Bootstrap -->
     <link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet">
+    <link href="{% static "css/bootstrap-select.min.css" %}" rel="stylesheet">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -20,9 +21,11 @@
 
     <!-- Custom styles -->
     <link href="{% static "css/base.css" %}" rel="stylesheet">
+    {% if moderator %}<link href="{% static "css/admin.css" %}" rel="stylesheet">{% endif %}
     {% block head %}{% endblock %}
 </head>
 <body>
+{% include "admin/delete_modal.html" %}
 <div class="wrap">
     <!-- Navigation -->
     <div class="navbar navbar-default navbar-static-top" role="navigation">
@@ -76,6 +79,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="{% static "js/bootstrap.min.js" %}"></script>
+<script src="{% static "js/bootstrap-select.min.js" %}"></script>
 <script type="text/javascript" src="{% static "js/jquery.cookie.js" %}"></script>
 <script type="text/javascript" src="{% static "js/facebook.js" %}"></script>
 <script src="{% static "js/base.js" %}"></script>
