@@ -21,10 +21,11 @@ class ObcyJokeFilter(django_filters.FilterSet):
     before = django_filters.DateTimeFilter(name='added', lookup_type='lt')
     after = django_filters.DateTimeFilter(name='added', lookup_type='gt')
     min_votes = django_filters.NumberFilter(name='votes', lookup_type='gte')
+    changed_after = django_filters.DateTimeFilter(name='changed', lookup_type='gt')
 
     class Meta:
         model = Joke
-        fields = ['after', 'before', 'min_votes']
+        fields = ['after', 'before', 'min_votes', 'changed_after']
 
 
 class AllViewSet(viewsets.ReadOnlyModelViewSet):
@@ -34,7 +35,10 @@ class AllViewSet(viewsets.ReadOnlyModelViewSet):
     paginate_by_param = 'limit'
 
     def get_queryset(self):
-        return prepare_view.all_sites(self.request, pages=False)['jokes']
+        show_hidden = False
+        if 'changed_after' in self.request.GET:
+            show_hidden = True
+        return prepare_view.all_sites(self.request, pages=False, show_hidden=show_hidden)['jokes']
 
     def get_object(self, queryset=None):
         return prepare_view.one_joke(self.request, self.kwargs['key'])['joke']

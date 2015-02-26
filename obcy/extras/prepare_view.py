@@ -88,9 +88,11 @@ def __order_by(request):
     return sort
 
 
-def all_sites(request, pages=True):
+def all_sites(request, pages=True, show_hidden=False):
     context = {}
-    jokes = Joke.objects.filter(duplicate=None).filter(hidden=None)
+    jokes = Joke.objects.filter(duplicate=None)
+    if not show_hidden:
+        jokes = jokes.filter(hidden=None)
     search = request.GET.get('q', '')
     if search.strip() != '':
         items = search.split()
