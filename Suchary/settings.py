@@ -60,7 +60,10 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
 
-ALLOWED_HOSTS = ['suchary.jakubchmura.pl', '95.85.63.30']
+ALLOWED_HOSTS = [
+    'suchary.jakubchmura.pl', '95.85.63.30',
+    'dev.jakubchmura.pl', '178.62.202.193'
+]
 
 
 # Application definition
