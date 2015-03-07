@@ -44,6 +44,7 @@ def edit_joke(key):
         'type': 'edit',
         'key': key
     }
+    send_change()
     send(data)
 
 
@@ -51,6 +52,7 @@ def new_jokes():
     data = {
         'type': 'new'
     }
+    send_change()
     send(data, 'new')
 
 
@@ -59,7 +61,15 @@ def delete_joke(key):
         'type': 'delete',
         'key': key
     }
+    send_change()
     send(data)
+
+
+def send_change():
+    data = {
+        'type': 'change'
+    }
+    send(data, 'change')
 
 
 def send_message(title, body, alias=None):
