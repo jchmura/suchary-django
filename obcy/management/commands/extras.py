@@ -8,6 +8,9 @@ def compare(set1, set2):
     len1 = len(set1)
     len2 = len(set2)
 
+    if not len1 or not len2:
+        return False
+
     if len1 < len2:
         count = count_number(set1, set2)
     else:
