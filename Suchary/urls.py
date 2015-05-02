@@ -40,6 +40,8 @@ urlpatterns = patterns(
     url(r'^api/', include(router.urls)),
     url(r'^register/$', 'api.views.register_device'),
     url(r'^unregister/$', 'api.views.deactivate_device'),
+    url(r'^edit/?$', 'api.views.edit_joke'),
+    url(r'^delete/?$', 'api.views.delete_joke'),
     # other
     url(r'^favicon\.ico$', RedirectView.as_view(url='/media/images/favicon.ico')),
     url(r'^apk/$', RedirectView.as_view(url='/media/files/suchary.apk')),

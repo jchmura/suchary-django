@@ -1,17 +1,21 @@
 import logging
 
+from django.db import transaction
 from django.http import HttpResponse
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 import django_filters
 from rest_framework import viewsets
+import reversion
 from user_agents import parse
 
 from obcy.models import Joke
 from obcy.extras import prepare_view
 from api.serializers import ObcyJokeSerializer
 from api.models import Device
+from api.commands import edit_joke as api_edit_joke
+from api.commands import delete_joke as api_remove_joke
 
 
 logger = logging.getLogger(__name__)
@@ -95,6 +99,40 @@ def deactivate_device(request):
         device.save()
     except Device.DoesNotExist:
         pass
+    return HttpResponse(status=200)
+
+
+@csrf_exempt
+@require_POST
+def edit_joke(request):
+    key = request.POST.get('key')
+    body = request.POST.get('body')
+    if not key or not body:
+        return HttpResponse(status=400)
+
+    with transaction.atomic(), reversion.create_revision():
+            joke = Joke.objects.get(key=key)
+            joke.body = body
+            joke.save()
+            reversion.set_comment('Body updated via API.')
+            logger.info('Joke %s edited.', joke.key)
+            api_edit_joke(joke.key)
+    return HttpResponse(status=200)
+
+
+@csrf_exempt
+@require_POST
+def delete_joke(request):
+    key = request.POST.get('key')
+    if not key:
+        return HttpResponse(status=400)
+
+    with transaction.atomic(), reversion.create_revision():
+            joke = Joke.objects.get(key=key)
+            joke.hidden = timezone.now()
+            joke.save()
+            logger.info('Joke %s removed via API.', joke.key)
+            api_remove_joke(joke.key)
     return HttpResponse(status=200)
 
 
