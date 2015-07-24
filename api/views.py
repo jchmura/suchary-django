@@ -1,5 +1,6 @@
 import logging
 
+from django.core.cache import cache
 from django.db import transaction
 from django.http import HttpResponse
 from django.utils import timezone
@@ -116,6 +117,7 @@ def edit_joke(request):
             joke.save()
             reversion.set_comment('Body updated via API.')
             logger.info('Joke %s edited.', joke.key)
+            cache.clear()
             api_edit_joke(joke.key)
     return HttpResponse(status=200)
 
@@ -132,6 +134,7 @@ def delete_joke(request):
             joke.hidden = timezone.now()
             joke.save()
             logger.info('Joke %s removed via API.', joke.key)
+            cache.clear()
             api_remove_joke(joke.key)
     return HttpResponse(status=200)
 

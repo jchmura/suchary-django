@@ -1,10 +1,12 @@
 import logging
 
+from django.core.cache import cache
 from django.db import transaction
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.template import RequestContext
 from django.utils import timezone
+
 from django.views.decorators.http import require_POST, require_GET
 import reversion
 
@@ -13,7 +15,6 @@ from obcy.models import Joke
 from obcy.management.commands.extras import clean_content
 from api.commands import edit_joke as api_edit_joke
 from api.commands import delete_joke as api_remove_joke
-
 
 logger = logging.getLogger(__name__)
 
@@ -53,6 +54,7 @@ def edit_joke(request, pk):
             reversion.set_user(user)
             reversion.set_comment('Body updated.')
             logger.info('Joke %s edited.', joke.key)
+            cache.clear()
             api_edit_joke(joke.key)
         return HttpResponse(status=200)
     else:
@@ -67,6 +69,7 @@ def delete_joke(request, pk):
         joke.hidden = timezone.now()
         joke.save()
         logger.info('Joke %s removed.', joke.key)
+        cache.clear()
         api_remove_joke(joke.key)
         return HttpResponse(status=200)
     else:
@@ -82,6 +85,7 @@ def duplicate_joke(request, pk, key):
         joke.duplicate = original
         joke.save()
         logger.info('Joke %s marked as duplicate of %s.', joke.key, original.key)
+        cache.clear()
         api_remove_joke(joke.key)
         return HttpResponse(status=200)
     else:

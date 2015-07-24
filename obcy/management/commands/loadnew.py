@@ -1,10 +1,9 @@
-import obcy.admin
-
 import json
 import logging
 import os
 from time import sleep
 
+from django.core.cache import cache
 from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.db import transaction
@@ -15,7 +14,6 @@ import reversion
 from api.commands import new_jokes
 from obcy.management.commands.extras import input_json, is_duplicate, HTMLStripper, clean_content
 from obcy.models import Joke
-
 
 logger = logging.getLogger(__name__)
 
@@ -76,6 +74,7 @@ class Command(BaseCommand):
                     self.update_count += 1
 
         if self.new_count:
+            cache.clear()
             new_jokes()
 
         self.stdout.write('Successfully added %d new jokes' % self.new_count)
