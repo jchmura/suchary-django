@@ -81,7 +81,8 @@ def handle_gcm_response(r, reg_ids):
         for i, result in enumerate(response['results']):
             if 'error' in result and result['error'] == 'NotRegistered':
                 reg_id = reg_ids[i]
-                device = Device.objects.get(registration_id=reg_id)
-                device.active = False
-                device.save()
-                logger.warning('Device %s is not registered', device.pk)
+                devices = Device.objects.filter(registration_id=reg_id)
+                for device in devices:
+                    device.active = False
+                    device.save()
+                    logger.warning('Device %s is not registered', device.pk)
