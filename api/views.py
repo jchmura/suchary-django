@@ -1,18 +1,22 @@
 import logging
 
+from django.core.cache import cache
+from django.db import transaction
 from django.http import HttpResponse
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 import django_filters
-from rest_framework import viewsets
+from rest_framework import viewsets, mixins
+from rest_framework.permissions import DjangoModelPermissionsOrAnonReadOnly
+import reversion
 from user_agents import parse
 
 from obcy.models import Joke
 from obcy.extras import prepare_view
 from api.serializers import ObcyJokeSerializer
 from api.models import Device
-
+from api.commands import delete_joke as api_remove_joke
 
 logger = logging.getLogger(__name__)
 
@@ -28,20 +32,29 @@ class ObcyJokeFilter(django_filters.FilterSet):
         fields = ['after', 'before', 'min_votes', 'changed_after']
 
 
-class AllViewSet(viewsets.ReadOnlyModelViewSet):
+class AllViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin,
+                 viewsets.GenericViewSet):
     serializer_class = ObcyJokeSerializer
     filter_class = ObcyJokeFilter
     lookup_field = 'key'
     paginate_by_param = 'limit'
+    permission_classes = (DjangoModelPermissionsOrAnonReadOnly,)
+    queryset = Joke.objects.none()
 
     def get_queryset(self):
-        show_hidden = False
-        if 'changed_after' in self.request.GET:
-            show_hidden = True
-        return prepare_view.all_sites(self.request, pages=False, show_hidden=show_hidden)['jokes']
+        jokes = Joke.objects.all().order_by('-added')
+        if 'changed_after' not in self.request.GET:
+            jokes = jokes.filter(hidden=None)
 
-    def get_object(self, queryset=None):
-        return prepare_view.one_joke(self.request, self.kwargs['key'])['joke']
+        return jokes
+
+    def perform_destroy(self, instance):
+        with transaction.atomic(), reversion.create_revision():
+            instance.hidden = timezone.now()
+            instance.save()
+            logger.info('Joke %s removed via API.', instance.key)
+            cache.clear()
+            api_remove_joke(instance.key)
 
 
 class RandomJokes(viewsets.ReadOnlyModelViewSet):

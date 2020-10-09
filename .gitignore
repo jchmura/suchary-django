@@ -65,3 +65,4 @@ target/
 # Project specific
 data/*.json
 Suchary/local_settings.py
+Suchary/dev_settings.py

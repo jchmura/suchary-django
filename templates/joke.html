@@ -16,7 +16,7 @@
 
         <a href="{{ joke.url }}">
             <span class="pull-right">
-                <img class="img-joke-source" title="Źródło" src="{{ MEDIA_URL }}images/{{ joke.site }}_small.{{ site_image_extension|lookup:joke.site }}"
+                <img class="img-joke-source" title="Źródło" src="{{ MEDIA_URL }}../static/images/{{ joke.site }}_small.{{ site_image_extension|lookup:joke.site }}"
                         {% if moderator %} style="height: 50%" {% endif %}>
             </span>
         </a>

@@ -13,7 +13,7 @@ class Joke(models.Model):
     added = models.DateTimeField()
     hidden = models.DateTimeField(blank=True, null=True, default=None)
     verified = models.DateTimeField(blank=True, null=True, default=None)
-    changed = models.DateTimeField(auto_now=True, auto_now_add=True)
+    changed = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return str(self.key)

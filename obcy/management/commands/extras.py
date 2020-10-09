@@ -1,4 +1,5 @@
 from datetime import datetime
+from django.utils import timezone
 import html
 from html.parser import HTMLParser
 import re
@@ -7,6 +8,9 @@ import re
 def compare(set1, set2):
     len1 = len(set1)
     len2 = len(set2)
+
+    if not len1 or not len2:
+        return False
 
     if len1 < len2:
         count = count_number(set1, set2)
@@ -63,6 +67,7 @@ def is_duplicate(joke, jokes):
         if compare(set1, set2):
             if not joke.duplicate:
                 joke.duplicate = second_joke
+                joke.hidden = timezone.now()
             return True
     else:
         return False
@@ -70,7 +75,7 @@ def is_duplicate(joke, jokes):
 
 class HTMLStripper(HTMLParser):
     def __init__(self):
-        super(HTMLStripper, self).__init__(convert_charrefs=False)
+        super(HTMLStripper, self).__init__()
         self.text = ''
 
     def handle_data(self, data):
@@ -80,7 +85,7 @@ class HTMLStripper(HTMLParser):
         self.text += '&{};'.format(name)
 
     def get_text(self):
-        return html.unescape(self.text)
+        return self.unescape(self.text)
 
 
 def clean_content(body):

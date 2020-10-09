@@ -60,7 +60,10 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
 
-ALLOWED_HOSTS = ['suchary.jakubchmura.pl', '95.85.63.30']
+ALLOWED_HOSTS = [
+    'suchary.jakubchmura.pl', '95.85.63.30',
+    'dev.jakubchmura.pl', '178.62.202.193'
+]
 
 
 # Application definition
@@ -74,6 +77,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 
     'rest_framework',
+    'rest_framework.authtoken',
     'django_extensions',
     'django_filters',
     'reversion',
@@ -84,12 +88,14 @@ INSTALLED_APPS = (
 )
 
 MIDDLEWARE_CLASSES = (
+    'django.middleware.cache.UpdateCacheMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
     'reversion.middleware.RevisionMiddleware',
 )
 
@@ -134,7 +140,22 @@ REST_FRAMEWORK = {
         'rest_framework.serializers.HyperlinkedModelSerializer',
     'PAGINATE_BY': 15,
     'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    )
 }
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': '/tmp/django-cache',
+    }
+}
+
+CACHE_MIDDLEWARE_ALIAS = 'default'
+CACHE_MIDDLEWARE_SECONDS = 2
+CACHE_MIDDLEWARE_KEY_PREFIX = 'default'
 
 LOG_DIR = os.path.join(BASE_DIR, 'logs/')
 
@@ -190,3 +211,8 @@ LOGGING = {
 
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = LOG_DIR + '/mail'
+
+try:
+    from .dev_settings import *
+except ImportError:
+    pass

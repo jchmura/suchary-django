@@ -1,5 +1,6 @@
 import logging
 
+from django.core.cache import cache
 from django.db import transaction
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
@@ -13,7 +14,6 @@ from obcy.models import Joke
 from obcy.management.commands.extras import clean_content
 from api.commands import edit_joke as api_edit_joke
 from api.commands import delete_joke as api_remove_joke
-
 
 logger = logging.getLogger(__name__)
 
@@ -53,7 +53,8 @@ def edit_joke(request, pk):
             reversion.set_user(user)
             reversion.set_comment('Body updated.')
             logger.info('Joke %s edited.', joke.key)
-            api_edit_joke(joke.key)
+            cache.clear()
+            #api_edit_joke(joke.key)
         return HttpResponse(status=200)
     else:
         return HttpResponse('User not authorised to edit joke', status=401)
@@ -67,7 +68,8 @@ def delete_joke(request, pk):
         joke.hidden = timezone.now()
         joke.save()
         logger.info('Joke %s removed.', joke.key)
-        api_remove_joke(joke.key)
+        cache.clear()
+        #api_remove_joke(joke.key)
         return HttpResponse(status=200)
     else:
         return HttpResponse('User not authorised to remove joke', status=401)
@@ -80,9 +82,11 @@ def duplicate_joke(request, pk, key):
         joke = Joke.objects.get(pk=pk)
         original = Joke.objects.get(key=key)
         joke.duplicate = original
+        joke.hidden = timezone.now()
         joke.save()
         logger.info('Joke %s marked as duplicate of %s.', joke.key, original.key)
-        api_remove_joke(joke.key)
+        cache.clear()
+        #api_remove_joke(joke.key)
         return HttpResponse(status=200)
     else:
         return HttpResponse('User not authorised to mark joke as duplicated', status=401)

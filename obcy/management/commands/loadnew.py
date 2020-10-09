@@ -1,10 +1,9 @@
-import obcy.admin
-
 import json
 import logging
 import os
 from time import sleep
 
+from django.core.cache import cache
 from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.db import transaction
@@ -16,7 +15,6 @@ from api.commands import new_jokes
 from obcy.management.commands.extras import input_json, is_duplicate, HTMLStripper, clean_content
 from obcy.models import Joke
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -26,6 +24,9 @@ class Command(BaseCommand):
         self.new_count = 0
         self.update_count = 0
         self.site = None
+
+    def add_arguments(self, parser):
+        parser.add_argument('site')
 
     def create_joke(self, joke):
         key = joke['id']
@@ -48,10 +49,7 @@ class Command(BaseCommand):
         return Joke(site=self.site, key=key, slug=key, url=url, votes=votes, date=date, body=body, added=added)
 
     def handle(self, *args, **options):
-        if len(args) != 1:
-            return
-
-        self.site = args[0]
+        self.site = options['site']
 
         data = json.load(open(os.path.join(settings.BASE_DIR, 'data/{}.json'.format(self.site)), 'r'),
                          object_hook=input_json)
@@ -76,6 +74,7 @@ class Command(BaseCommand):
                     self.update_count += 1
 
         if self.new_count:
+            cache.clear()
             new_jokes()
 
         self.stdout.write('Successfully added %d new jokes' % self.new_count)
